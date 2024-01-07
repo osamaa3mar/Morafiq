@@ -1,0 +1,66 @@
+﻿@model IEnumerable<_5Dots.Models.Companion>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanionName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanionDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanionPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanionQuantityStock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanionSale)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Service)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanionName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanionDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanionPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanionQuantityStock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanionSale)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Service.ServiceName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CompanionId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CompanionId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CompanionId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

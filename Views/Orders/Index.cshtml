@@ -1,0 +1,57 @@
+﻿@model IEnumerable<_5Dots.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Order List</h1>
+<div class="table-responsive mb-4">
+    <table class="table table-fixed table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    User Name
+                </th>
+               
+                <th>
+                    Total Price
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (item.User != null)
+                        {
+                            @(item.User.FirstName + " " + item.User.LastName)
+                        }
+                        else
+                        {
+                            <span class="text-muted">N/A</span>
+                        }
+                    </td>
+
+
+                    
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                   <a href="/OrderProducts/OrderItems?orderId=@item.OrderId" class="btn btn-info mb-2">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

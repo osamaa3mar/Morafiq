@@ -1,0 +1,65 @@
+﻿@model IEnumerable<_5Dots.Models.Visa>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa; 
+        }
+
+        .custom-table {
+            background-color: rgba(0, 255, 0, 0.1); 
+        }
+
+        .action-buttons a {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h1 class="mb-4 text-success">Visa Information</h1>
+        <table class="table table-bordered table-striped custom-table">
+            <thead>
+                <tr>
+                    <th>Visa Number</th>
+                    <th>CVC</th>
+                    <th>ExpDate</th>
+                    <th>User ID</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.VisaNumber)</td>
+                        <td>@Html.DisplayFor(modelItem => item.CVC)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ExpDate)</td>
+                        <td>@Html.DisplayFor(modelItem => item.User.Id)</td>
+                        <td class="action-buttons">
+                            <a asp-action="Details" asp-route-id="@item.VisaId" class="btn btn-info">Details</a>
+                            <a asp-action="Edit" asp-route-id="@item.VisaId" class="btn btn-warning">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.VisaId" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

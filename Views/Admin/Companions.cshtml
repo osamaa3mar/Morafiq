@@ -1,0 +1,71 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .row {
+        --bs-gutter-x: 0rem;
+    }
+</style>
+<div class="iq-navbar-header" style="height: 215px;">
+    <div class="container-fluid iq-container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="flex-wrap d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1>Hello @Model.FirstName!</h1>
+                        <p>Welcome, Admin! We appreciate your contributions to our mission.</p>
+                    </div>
+                    <div>
+                        <a href="/Companions/Create" class="btn btn-link btn-soft-light">
+                            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="10" y="2" width="4" height="20" fill="currentColor" />
+                                <rect x="2" y="10" width="20" height="4" fill="currentColor" />
+                            </svg>
+                            Companion
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="iq-header-img">
+        <img src="~/Admin_assets/images/dashboard/top-header.png" alt="header" class="theme-color-default-img img-fluid w-100 h-100 animated-scaleX">
+        <img src="~/Admin_assets/images/dashboard/top-header1.png" alt="header" class="theme-color-purple-img img-fluid w-100 h-100 animated-scaleX">
+        <img src="~/Admin_assets/images/dashboard/top-header2.png" alt="header" class="theme-color-blue-img img-fluid w-100 h-100 animated-scaleX">
+        <img src="~/Admin_assets/images/dashboard/top-header3.png" alt="header" class="theme-color-green-img img-fluid w-100 h-100 animated-scaleX">
+        <img src="~/Admin_assets/images/dashboard/top-header4.png" alt="header" class="theme-color-yellow-img img-fluid w-100 h-100 animated-scaleX">
+        <img src="~/Admin_assets/images/dashboard/top-header5.png" alt="header" class="theme-color-pink-img img-fluid w-100 h-100 animated-scaleX">
+    </div>
+</div>          <!-- Nav Header Component End -->
+<!--Nav End-->
+<div class="conatiner-fluid content-inner mt-n5 py-0">
+    <div>
+        <div class="row  row-cols-1 row-cols-md-2 g-4">
+            @foreach (var Companion in (List<Companion>)(ViewBag.Companions))
+            {
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-4">
+
+                                @{
+                                    string imageBase64 = Convert.ToBase64String(Companion.Image);
+                                }
+                                <img src="data:image;base64,@imageBase64" class="mx-auto" style="display:block;" />
+                            </div>
+
+                            <div class="card-body">
+                                <h5 class="card-title">@Companion.CompanionName</h5>
+                                <p class="card-text">@Companion.CompanionDescription .</p>
+                                <a href="/Companions/Delete?Id=@Companion.CompanionId" class="btn btn-danger mb-2">Delete</a>
+                                <a href="/Companions/Edit?Id=@Companion.CompanionId" class="btn btn-primary mb-2">Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>

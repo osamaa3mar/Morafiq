@@ -1,0 +1,114 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .row {
+        --bs-gutter-x: 0rem;
+    }
+</style>
+<div class="iq-navbar-header" style="height: 215px;">
+    <div class="container-fluid iq-container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="flex-wrap d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1>Hello @Model.FirstName!</h1>
+                        <p>Welcome, Admin! We appreciate your contributions to our mission.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="iq-header-img">
+        <img src="~/Admin_assets/images/dashboard/top-header.png" alt="header" class="theme-color-default-img img-fluid w-100 h-100 animated-scaleX">
+        <img src="~/Admin_assets/images/dashboard/top-header1.png" alt="header" class="theme-color-purple-img img-fluid w-100 h-100 animated-scaleX">
+        <img src="~/Admin_assets/images/dashboard/top-header2.png" alt="header" class="theme-color-blue-img img-fluid w-100 h-100 animated-scaleX">
+        <img src="~/Admin_assets/images/dashboard/top-header3.png" alt="header" class="theme-color-green-img img-fluid w-100 h-100 animated-scaleX">
+        <img src="~/Admin_assets/images/dashboard/top-header4.png" alt="header" class="theme-color-yellow-img img-fluid w-100 h-100 animated-scaleX">
+        <img src="~/Admin_assets/images/dashboard/top-header5.png" alt="header" class="theme-color-pink-img img-fluid w-100 h-100 animated-scaleX">
+    </div>
+</div>          <!-- Nav Header Component End -->
+<!--Nav End-->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Testimonials List</h4>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table id="datatable" class="table table-striped" data-toggle="data-table">
+                        <thead>
+                            <tr>
+                                <th>User Name</th>
+                                <th>Message</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var testimonial in (List<Testimonial>)(ViewBag.Testimonials))
+                            {
+                                <tr>
+                                    <td>@testimonial.User.FirstName @testimonial.User.LastName</td>
+                                    <td>@testimonial.TestimonialMessage</td>
+                                    <td>
+                                        <select asp-for="@testimonial.TestimonialStatus" onchange="confirmUpdateStatus('@testimonial.TestimonialId', this.value, '@testimonial.TestimonialStatus')">
+                                            @if (@testimonial.TestimonialStatus == "Pending")
+                                            {
+                                                <option value="Pending" selected>Pending</option>
+                                                <option value="Accept">Accept</option>
+                                                <option value="Reject">Reject</option>
+                                            }
+                                            else if (@testimonial.TestimonialStatus == "Accept")
+                                            {
+                                                <option value="Pending">Pending</option>
+                                                <option value="Accept" selected>Accept</option>
+                                                <option value="Reject">Reject</option>
+                                            }
+                                            else if (@testimonial.TestimonialStatus == "Reject")
+                                            {
+                                                <option value="Pending">Pending</option>
+                                                <option value="Accept">Accept</option>
+                                                <option value="Reject" selected>Reject</option>
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>User Name</th>
+                                <th>Message</th>
+                                <th>Status</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmUpdateStatus(testimonialId, newStatus, currentStatus) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you really want to change the Testimonial status?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `/Testimonials/EditTestimonialStatus?testimonialId=${testimonialId}&newStatus=${newStatus}`;
+            } else {
+                document.querySelector(`[value="${currentStatus}"]`).selected = true;
+            }
+        });
+    }
+</script>

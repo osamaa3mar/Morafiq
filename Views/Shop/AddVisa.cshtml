@@ -1,0 +1,80 @@
+﻿@model _5Dots.Models.Visa
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card card-transparent shadow-none d-flex justify-content-center mb-0 auth-card">
+                <div class="card-body">
+                    <h4 class="text-center">Create Visa</h4>
+                    <hr />
+                    <form asp-action="CreateVisa" asp-controller="Shop">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="mb-3">
+                            <label asp-for="CVC" class="form-label"></label>
+                            <input asp-for="CVC" class="form-control" />
+                            <span asp-validation-for="CVC" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="VisaNumber" class="form-label"></label>
+                            <input asp-for="VisaNumber" class="form-control" />
+                            <span asp-validation-for="VisaNumber" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ExpDate" class="form-label"></label>
+                            <input asp-for="ExpDate" class="form-control" type="text" pattern="\d{2}/\d{4}" placeholder="MM/YYYY" oninput="validateExpirationDate(this)" />
+                            <span asp-validation-for="ExpDate" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <input type="submit" value="Create" class="btn btn-success w-100">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-6">
+            <div class="text-center">
+                <a asp-controller="Shop" asp-action="Checkout" class="btn btn-outline-danger">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script>
+    function validateExpirationDate(input) {
+        var enteredDate = input.value;
+        var errorSpan = input.parentElement.querySelector('[data-valmsg-for="ExpDate"]');
+
+        if (/^\d{2}\/\d{4}$/.test(enteredDate)) {
+            var parts = enteredDate.split('/');
+            var month = parseInt(parts[0], 10);
+            var year = parseInt(parts[1], 10);
+
+            var currentDate = new Date();
+            var currentMonth = currentDate.getMonth();
+            var currentYear = currentDate.getFullYear();
+
+            if (year < currentYear || (year === currentYear && month <= currentMonth)) {
+                input.setCustomValidity('Expiration date must be greater than the current date.');
+                errorSpan.textContent = 'Expiration date must be greater than the current date.';
+            } else {
+                input.setCustomValidity('');
+                errorSpan.textContent = '';
+            }
+        } else {
+            input.setCustomValidity('Please enter a valid date in MM/YYYY format.');
+            errorSpan.textContent = 'Please enter a valid date in MM/YYYY format.';
+        }
+    }
+</script>

@@ -1,0 +1,127 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Profile";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  
+    <title>Edit Profile</title>
+</head>
+<body>
+    <div class="container mt-4 d-flex justify-content-center align-items-center">
+        <div class="d-flex">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="pe-3">
+                            @{
+                                string imageBase64 = Model.Image != null ? Convert.ToBase64String(Model.Image) : string.Empty;
+                            }
+                            @if (!string.IsNullOrEmpty(imageBase64))
+                            {
+                                <img src="data:image;base64,@imageBase64" class="rounded-circle p-1 bg-dark" width="80" height="80" alt="Category Image">
+                            }
+                            else
+                            {
+                                <span>No image available</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <form asp-action="EditProfile" method="post" enctype="multipart/form-data">
+                        @Html.HiddenFor(x => x.Id)
+                        <div class="twit-feed">
+                            <div class="media-support-body">
+                                <p><b>Personal information</b></p>
+                                <div class="d-flex flex-wrap mb-1">
+                                    <dl class="row">
+                                        <dt class="col-sm-3" style="white-space: nowrap;">
+                                            @Html.DisplayNameFor(model => model.FirstName)
+                                        </dt>
+                                        <dd class="col-sm-9">
+                                            <input asp-for="FirstName" class="form-control" />
+                                        </dd>
+
+                                        <dt class="col-sm-3" style="white-space: nowrap;">
+                                            @Html.DisplayNameFor(model => model.LastName)
+                                        </dt>
+                                        <dd class="col-sm-9">
+                                            <input asp-for="LastName" class="form-control" />
+                                        </dd>
+                                    </dl>
+                                </div>
+                                <hr />
+                                <div class="twit-date">
+                                    <p><b>Contact Information:</b></p>
+                                    <div class="d-flex flex-wrap mb-1">
+                                        <dl class="row">
+                                            <dt class="col-sm-3" style="white-space: nowrap;">
+                                                @Html.DisplayNameFor(model => model.Email)
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                <input asp-for="Email" class="form-control" readonly />
+                                            </dd>
+
+                                            <dt class="col-sm-3" style="white-space: nowrap;">
+                                                @Html.DisplayNameFor(model => model.PhoneNumber)
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                <input asp-for="PhoneNumber" class="form-control" />
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    <hr />
+                                    <p><b>Visa Information:</b></p>
+                                    <div class="d-flex flex-wrap mb-1">
+                                        <dl class="row">
+                                            <dt class="col-sm-3" style="white-space: nowrap;">
+                                                Visa Number
+                                            </dt>
+                                            <dd class="col-sm-9 d-flex justify-content-between align-items-center">
+                                                @if (string.IsNullOrEmpty(ViewBag.VisaNumber))
+                                                {
+                                                    <a asp-action="Create" asp-controller="Visas" asp-route-id="@Model.Id" class="btn btn-primary ml-3">Add Visa</a>
+                                                }
+                                                else
+                                                {
+                                                    @ViewBag.VisaNumber
+                                                    <a asp-action="Delete" asp-controller="Visas" asp-route-id="@Model.Id" class="btn btn-danger ml-3">Delete Visa</a>
+                                                }
+                                            </dd>
+
+                                            <dt class="col-sm-3" style="white-space: nowrap;">
+                                                Expiration Date
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                @if (ViewBag.ExpDate == null)
+                                                {
+                                                    <span>No expiration date available</span>
+                                                   
+                                                }
+                                                else
+                                                {
+                                                    @(ViewBag.ExpDate != null ? ViewBag.ExpDate.ToString("MM/yyyy") : "N/A")
+
+                                                }
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    <div class="mt-3 text-center">
+                                        <input type="submit" value="Save" class="btn btn-success" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
