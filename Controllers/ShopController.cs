@@ -1,5 +1,5 @@
-﻿using _5Dots.Data;
-using _5Dots.Models;
+﻿using _Morafiq.Data;
+using _Morafiq.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
@@ -8,7 +8,7 @@ using MimeKit;
 using System.Net.Mail;
 using System.Security.Claims;
 using MailKit.Net.Smtp;
-namespace _5Dots.Controllers
+namespace _Morafiq.Controllers
 {
     public class ShopController : Controller
     {
@@ -56,7 +56,7 @@ namespace _5Dots.Controllers
 
             return View(Service);
         }
-        public async Task<IActionResult> CompanionDetails(int? id, int quentity)
+        public async Task<IActionResult> CompanionDetails(int? id)
         {
 
             ViewBag.Companions = _context.Companions.ToList();
@@ -77,7 +77,6 @@ namespace _5Dots.Controllers
             {
                 return NotFound();
             }
-            Companion.CompanionQuantityStock = quentity;
 			ViewBag.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; ;
             return View(Companion);
         }
@@ -240,7 +239,7 @@ namespace _5Dots.Controllers
             User user = _context.Users.FirstOrDefault(u => u.Id == userId);
 
             var email = new MimeMessage();
-            email.From.Add(new MailboxAddress("Morafiq", "info.morafiq@gmail.com"));
+            email.From.Add(new MailboxAddress("morafiq", "info.morafiq@gmail.com"));
             email.To.Add(new MailboxAddress($"{user.FirstName} {user.LastName}", user.Email));
             email.Subject = "Order Confirmation";
 
@@ -252,7 +251,7 @@ namespace _5Dots.Controllers
                              + "The shipping cost is 3 JD.\n\n"
                              + "We appreciate your business and look forward to serving you again!\n\n"
                              + "Best regards,\n"
-                             + "5Dots Team";
+                             + "Morafiq Team";
 
             email.Body = bodyBuilder.ToMessageBody();
 

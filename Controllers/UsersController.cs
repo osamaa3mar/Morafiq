@@ -1,5 +1,5 @@
-﻿using _5Dots.Data;
-using _5Dots.Models;
+﻿using _Morafiq.Data;
+using _Morafiq.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-namespace _5Dots.Controllers
+namespace _Morafiq.Controllers
 {
     public class UsersController : Controller
     {

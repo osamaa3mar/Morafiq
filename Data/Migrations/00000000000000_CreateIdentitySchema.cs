@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace _5Dots.Data.Migrations
+namespace _Morafiq.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

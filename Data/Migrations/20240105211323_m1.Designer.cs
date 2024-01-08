@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using _5Dots.Data;
+using _Morafiq.Data;
 
 #nullable disable
 
-namespace _5Dots.Data.Migrations
+namespace _Morafiq.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20240105211323_m1")]
@@ -24,7 +24,7 @@ namespace _5Dots.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("_5Dots.Models.Cart", b =>
+            modelBuilder.Entity("_Morafiq.Models.Cart", b =>
                 {
                     b.Property<int>("CartId")
                         .ValueGeneratedOnAdd()
@@ -49,7 +49,7 @@ namespace _5Dots.Data.Migrations
                     b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.CartCompanion", b =>
+            modelBuilder.Entity("_Morafiq.Models.CartCompanion", b =>
                 {
                     b.Property<int>("CartId")
                         .HasColumnType("int");
@@ -67,7 +67,7 @@ namespace _5Dots.Data.Migrations
                     b.ToTable("CartCompanions");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Companion", b =>
+            modelBuilder.Entity("_Morafiq.Models.Companion", b =>
                 {
                     b.Property<int>("CompanionId")
                         .ValueGeneratedOnAdd()
@@ -115,7 +115,7 @@ namespace _5Dots.Data.Migrations
                     b.ToTable("Companions");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.CompanionImage", b =>
+            modelBuilder.Entity("_Morafiq.Models.CompanionImage", b =>
                 {
                     b.Property<int>("ImageId")
                         .ValueGeneratedOnAdd()
@@ -145,7 +145,7 @@ namespace _5Dots.Data.Migrations
                     b.ToTable("CompanionImages");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Order", b =>
+            modelBuilder.Entity("_Morafiq.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
@@ -174,7 +174,7 @@ namespace _5Dots.Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.OrderCompanion", b =>
+            modelBuilder.Entity("_Morafiq.Models.OrderCompanion", b =>
                 {
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -192,7 +192,7 @@ namespace _5Dots.Data.Migrations
                     b.ToTable("OrderCompanion");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Payment", b =>
+            modelBuilder.Entity("_Morafiq.Models.Payment", b =>
                 {
                     b.Property<int>("PaymentId")
                         .ValueGeneratedOnAdd()
@@ -216,7 +216,7 @@ namespace _5Dots.Data.Migrations
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Review", b =>
+            modelBuilder.Entity("_Morafiq.Models.Review", b =>
                 {
                     b.Property<int>("ReviewId")
                         .ValueGeneratedOnAdd()
@@ -254,7 +254,7 @@ namespace _5Dots.Data.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Service", b =>
+            modelBuilder.Entity("_Morafiq.Models.Service", b =>
                 {
                     b.Property<int>("ServiceId")
                         .ValueGeneratedOnAdd()
@@ -287,7 +287,7 @@ namespace _5Dots.Data.Migrations
                     b.ToTable("Services");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Testimonial", b =>
+            modelBuilder.Entity("_Morafiq.Models.Testimonial", b =>
                 {
                     b.Property<int>("TestimonialId")
                         .ValueGeneratedOnAdd()
@@ -314,7 +314,7 @@ namespace _5Dots.Data.Migrations
                     b.ToTable("Testimonials");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Visa", b =>
+            modelBuilder.Entity("_Morafiq.Models.Visa", b =>
                 {
                     b.Property<int>("VisaId")
                         .ValueGeneratedOnAdd()
@@ -552,7 +552,7 @@ namespace _5Dots.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("_5Dots.Models.User", b =>
+            modelBuilder.Entity("_Morafiq.Models.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -583,9 +583,9 @@ namespace _5Dots.Data.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Cart", b =>
+            modelBuilder.Entity("_Morafiq.Models.Cart", b =>
                 {
-                    b.HasOne("_5Dots.Models.User", "User")
+                    b.HasOne("_Morafiq.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -594,15 +594,15 @@ namespace _5Dots.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.CartCompanion", b =>
+            modelBuilder.Entity("_Morafiq.Models.CartCompanion", b =>
                 {
-                    b.HasOne("_5Dots.Models.Cart", "Cart")
+                    b.HasOne("_Morafiq.Models.Cart", "Cart")
                         .WithMany()
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("_5Dots.Models.Companion", "Companion")
+                    b.HasOne("_Morafiq.Models.Companion", "Companion")
                         .WithMany()
                         .HasForeignKey("CompanionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -613,9 +613,9 @@ namespace _5Dots.Data.Migrations
                     b.Navigation("Companion");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Companion", b =>
+            modelBuilder.Entity("_Morafiq.Models.Companion", b =>
                 {
-                    b.HasOne("_5Dots.Models.Service", "Service")
+                    b.HasOne("_Morafiq.Models.Service", "Service")
                         .WithMany("Companions")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -624,9 +624,9 @@ namespace _5Dots.Data.Migrations
                     b.Navigation("Service");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.CompanionImage", b =>
+            modelBuilder.Entity("_Morafiq.Models.CompanionImage", b =>
                 {
-                    b.HasOne("_5Dots.Models.Companion", "Companion")
+                    b.HasOne("_Morafiq.Models.Companion", "Companion")
                         .WithMany()
                         .HasForeignKey("CompanionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -635,9 +635,9 @@ namespace _5Dots.Data.Migrations
                     b.Navigation("Companion");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Order", b =>
+            modelBuilder.Entity("_Morafiq.Models.Order", b =>
                 {
-                    b.HasOne("_5Dots.Models.User", "User")
+                    b.HasOne("_Morafiq.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -646,15 +646,15 @@ namespace _5Dots.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.OrderCompanion", b =>
+            modelBuilder.Entity("_Morafiq.Models.OrderCompanion", b =>
                 {
-                    b.HasOne("_5Dots.Models.Companion", "Companion")
+                    b.HasOne("_Morafiq.Models.Companion", "Companion")
                         .WithMany()
                         .HasForeignKey("CompanionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("_5Dots.Models.Order", "Order")
+                    b.HasOne("_Morafiq.Models.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -665,9 +665,9 @@ namespace _5Dots.Data.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Payment", b =>
+            modelBuilder.Entity("_Morafiq.Models.Payment", b =>
                 {
-                    b.HasOne("_5Dots.Models.Order", "Order")
+                    b.HasOne("_Morafiq.Models.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -676,15 +676,15 @@ namespace _5Dots.Data.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Review", b =>
+            modelBuilder.Entity("_Morafiq.Models.Review", b =>
                 {
-                    b.HasOne("_5Dots.Models.Companion", "Companion")
+                    b.HasOne("_Morafiq.Models.Companion", "Companion")
                         .WithMany("Reviews")
                         .HasForeignKey("CompanionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("_5Dots.Models.User", "User")
+                    b.HasOne("_Morafiq.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -695,9 +695,9 @@ namespace _5Dots.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Testimonial", b =>
+            modelBuilder.Entity("_Morafiq.Models.Testimonial", b =>
                 {
-                    b.HasOne("_5Dots.Models.User", "User")
+                    b.HasOne("_Morafiq.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -706,9 +706,9 @@ namespace _5Dots.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Visa", b =>
+            modelBuilder.Entity("_Morafiq.Models.Visa", b =>
                 {
-                    b.HasOne("_5Dots.Models.User", "User")
+                    b.HasOne("_Morafiq.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -768,12 +768,12 @@ namespace _5Dots.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Companion", b =>
+            modelBuilder.Entity("_Morafiq.Models.Companion", b =>
                 {
                     b.Navigation("Reviews");
                 });
 
-            modelBuilder.Entity("_5Dots.Models.Service", b =>
+            modelBuilder.Entity("_Morafiq.Models.Service", b =>
                 {
                     b.Navigation("Companions");
                 });

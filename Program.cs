@@ -1,10 +1,10 @@
-using _5Dots.Data;
-using _5Dots.Models;
+using _Morafiq.Data;
+using _Morafiq.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace _5Dots
+namespace _Morafiq
 {
     public class Program
     {

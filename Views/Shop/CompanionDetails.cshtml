@@ -1,4 +1,4 @@
-﻿@model _5Dots.Models.Companion
+﻿@model _Morafiq.Models.Companion
 @{
   ViewData["Title"] = "CompanionDetails";
 }
@@ -57,11 +57,11 @@
             <img class="product__details__pic__item--large" src="data:image;base64,@imageBase64" alt="">
           </div>
           <div class="product__details__pic__slider owl-carousel">
-            @foreach (var item in ViewBag.ProductImages)
+            @* @foreach (var item in ViewBag.ProductImages)
             {
               string imageBase = Convert.ToBase64String(item.Image);
               <img data-imgbigurl="data:image;base64,@imageBase" src="data:image;base64,@imageBase" alt="">
-            }
+            } *@
           </div>
         </div>
       </div>
@@ -219,7 +219,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="section-title related__product__title">
-          <h2>Related Product</h2>
+          <h2>Related Companions</h2>
         </div>
       </div>
     </div>
@@ -238,7 +238,7 @@
               </div>
               <div class="product__item__text">
                                 <h6><a asp-route-id="@Companion.CompanionId">@Companion.CompanionName</a></h6>
-                                <h5>@Companion.ProductPrice JD</h5>
+                                <h5>@Companion.CompanionPrice JD</h5>
               </div>
             </div>
           </div>

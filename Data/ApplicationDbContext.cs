@@ -1,8 +1,8 @@
-﻿using _5Dots.Models;
+﻿using _Morafiq.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace _5Dots.Data
+namespace _Morafiq.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
@@ -34,6 +34,6 @@ namespace _5Dots.Data
                           .HasKey(os => new { os.CartId, os.CompanionId });
         }
 
-        public DbSet<_5Dots.Models.OrderCompanion>? OrderCompanion { get; set; }
+        public DbSet<_Morafiq.Models.OrderCompanion>? OrderCompanion { get; set; }
     }
 }

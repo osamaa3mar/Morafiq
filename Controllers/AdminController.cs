@@ -1,11 +1,11 @@
-﻿using _5Dots.Data;
-using _5Dots.Models;
+﻿using _Morafiq.Data;
+using _Morafiq.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace _5Dots.Controllers
+namespace _Morafiq.Controllers
 {
     [Authorize(Roles = "ADMIN")]
     public class AdminController : Controller

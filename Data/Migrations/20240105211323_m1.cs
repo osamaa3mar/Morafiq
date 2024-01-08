@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace _5Dots.Data.Migrations
+namespace _Morafiq.Data.Migrations
 {
     public partial class m1 : Migration
     {

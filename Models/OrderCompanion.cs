@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace _5Dots.Models
+namespace _Morafiq.Models
 {
     public class OrderCompanion
     {

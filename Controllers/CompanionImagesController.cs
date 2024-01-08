@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using _5Dots.Data;
-using _5Dots.Models;
+using _Morafiq.Data;
+using _Morafiq.Models;
 
-namespace _5Dots.Controllers
+namespace _Morafiq.Controllers
 {
     public class CompanionImagesController : Controller
     {

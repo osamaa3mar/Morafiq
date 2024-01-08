@@ -10,8 +10,8 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
-using _5Dots.Data;
-using _5Dots.Models;
+using _Morafiq.Data;
+using _Morafiq.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +22,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace _5Dots.Areas.Identity.Pages.Account
+namespace _Morafiq.Areas.Identity.Pages.Account
 {
     [Authorize(Roles = "ADMIN")]
     public class RegisterModel : PageModel
@@ -119,7 +119,7 @@ namespace _5Dots.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
                 user.FirstName = "Admin";
-                user.LastName = "5Dots";
+                user.LastName = "Morafiq";
                 user.EmailConfirmed = true;
                 user.Role = "Admin";
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);

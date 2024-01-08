@@ -1,5 +1,5 @@
-﻿using _5Dots.Data;
-using _5Dots.Models;
+﻿using _Morafiq.Data;
+using _Morafiq.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +7,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Security.Claims;
 
-namespace _5Dots.Controllers
+namespace _Morafiq.Controllers
 {
     public class HomeController : Controller
     {

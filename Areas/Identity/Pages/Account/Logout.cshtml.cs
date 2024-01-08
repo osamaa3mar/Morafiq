@@ -4,14 +4,14 @@
 
 using System;
 using System.Threading.Tasks;
-using _5Dots.Models;
+using _Morafiq.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace _5Dots.Areas.Identity.Pages.Account
+namespace _Morafiq.Areas.Identity.Pages.Account
 {
     public class LogoutModel : PageModel
     {

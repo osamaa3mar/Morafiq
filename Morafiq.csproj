@@ -4,8 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-_5Dots-75304bb1-8e59-4306-b59b-e500e93d6ddf</UserSecretsId>
-    <RootNamespace>_5Dots</RootNamespace>
+    <UserSecretsId>aspnet-_Morafiq-75304bb1-8e59-4306-b59b-e500e93d6ddf</UserSecretsId>
+    <RootNamespace>_Morafiq</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

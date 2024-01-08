@@ -1,4 +1,4 @@
-namespace _5Dots.Models
+namespace _Morafiq.Models
 {
     public class ErrorViewModel
     {

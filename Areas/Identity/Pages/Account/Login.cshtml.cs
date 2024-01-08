@@ -14,11 +14,11 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using _5Dots.Models;
-using _5Dots.Data;
+using _Morafiq.Models;
+using _Morafiq.Data;
 using System.Security.Claims;
 
-namespace _5Dots.Areas.Identity.Pages.Account
+namespace _Morafiq.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
