@@ -728,10 +728,12 @@ ol {
 }
 
 .hero__item {
+	position:relative;
 	height: 431px;
 	display: flex;
 	align-items: center;
-	padding-left: 75px;
+	justify-content:flex-start;
+	padding-left: 22px;
 }
 
 .hero__text span {
@@ -754,10 +756,10 @@ ol {
 	margin-bottom: 35px;
 }
 
-.hero__item {
+/*.hero__item {
 	position: relative;
-	text-align: center;
-}
+	text-align: left;
+}*/
 
 .hero__overlay {
 	position: absolute;
@@ -789,10 +791,10 @@ ol {
 	border-radius: 5px;
 }
 
-.hero__item {
+/*.hero__item {
 	position: relative;
 	text-align: center;
-}
+}*/
 
 .hero__overlay {
 	position: absolute;
@@ -807,11 +809,11 @@ ol {
 	background-color: rgba(255, 255, 255, 0.7); /* Adjust the overlay color and transparency */
 }
 
-.hero__text {
+/*.hero__text {
 	font-size: 24px;
 	color: #333;
 	margin-bottom: 10px;
-}
+}*/
 
 .primary-btn {
 	display: inline-block;
@@ -824,17 +826,14 @@ ol {
 	border-radius: 5px;
 }
 
-.hero__item {
+/*.hero__item {
 	position: relative;
 	overflow: hidden;
-}
+}*/
 
 .hero__text {
 	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	text-align: center;
+	text-align:start;
 	color: #fff; /* Set text color to make it visible on the background */
 }
 

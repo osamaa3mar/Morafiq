@@ -1,152 +1,172 @@
 ﻿@model _Morafiq.Models.Service
 <!-- Product Section Begin -->
 <section class="product spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-5">
-                <div class="sidebar">
-                    <div class="sidebar__item">
-                        <h4>Services</h4>
-                        <ul>
-                            <li><a asp-controller="Shop" asp-action="Index">All</a></li>
-                            @foreach (var Service in ViewBag.Services)
-                            {
-                                <li data-filter=".@Service.ServiceName.ToLower()">
-                                    <a asp-controller="Shop"
-                                       asp-action="Service" asp-route-id="@Service.ServiceId">@Service.ServiceName</a>
-                                </li>
-                            }
-                        </ul>
-                    </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-3 col-md-5">
+				<div class="sidebar">
+					<div class="sidebar__item">
+						<h4>Services</h4>
+						<ul>
+							<li><a asp-controller="Shop" asp-action="Index">All</a></li>
+							@foreach (var Service in ViewBag.Services)
+							{
+								<li data-filter=".@Service.ServiceName.ToLower()">
+									<a asp-controller="Shop"
+									   asp-action="Service" asp-route-id="@Service.ServiceId">@Service.ServiceName</a>
+								</li>
+							}
+						</ul>
+					</div>
 
-                </div>
-            </div>
-            <div class="col-lg-9 col-md-7">
-                <div class="product__discount">
-                    <div class="section-title product__discount__title">
-                        <h2>Sale Off</h2>
-                    </div>
-                    <div class="row">
-                        <div class="product__discount__slider owl-carousel">
-                            @foreach (var item in ViewBag.Companions)
-                            {
-                                @if (item.CompanionSale > 0)
-                                {
-                                    <div class="col-lg-4">
-                                        <a asp-action="CompanionDetails"
-                                           asp-route-id="@item.CompanionId">
-                                        <div class="product__discount__item">
-                                            <div class="product__discount__item__pic set-bg"
-                                                 data-setbg="img/product/discount/pd-1.jpg">
-                                                @{
-                                                    string imageBase64 = Convert.ToBase64String(item.Image);
-                                                }
+				</div>
+			</div>
+			<div class="col-lg-9 col-md-7">
+				<div class="product__discount">
+					<div class="section-title product__discount__title">
+						<h2>Sale Off</h2>
+					</div>
+					<div class="row">
+						<div class="product__discount__slider owl-carousel">
+							@foreach (var item in ViewBag.Companions)
+							{
+								@if (item.CompanionSale > 0)
+								{
+									<div class="col-lg-4">
+										<a asp-action="CompanionDetails"
+										   asp-route-id="@item.CompanionId">
+											<div class="product__discount__item">
+												<div class="product__discount__item__pic set-bg"
+													 data-setbg="img/product/discount/pd-1.jpg">
+													@{
+														string imageBase64 = Convert.ToBase64String(item.Image);
+													}
 
-                                                <img src="data:image;base64,@imageBase64">
-                                                @{
-                                                    int sale = (int)item.CompanionSale;
-                                                }
-                                                <div class="product__discount__percent">@sale%</div>
-                                            </div>
-                                            <div class="product__discount__item__text">
-                                              <a asp-action="CompanionDetails"
-                                           asp-route-id="@item.CompanionId">  <span>@item.Service.ServiceName</span>
-                                                <h5>
-                                                    @item.CompanionName
-                                                </h5>
-                                                @{
-                                                    var priceAfterDiscount = item.CompanionPrice - (item.CompanionPrice *
-                                                    item.CompanionSale / 100);
-                                                }
-                                                <div class="product__item__price">
-                                                    @priceAfterDiscount JD
-                                                    <span> @item.CompanionPrice JD</span>
-                                                </div>
-                                        </a>
-                                                </div>
-                                        </div></a>
-                                    </div>
-                                }
+													<img src="data:image;base64,@imageBase64">
+													@{
+														int sale = (int)item.CompanionSale;
+													}
+													<div class="product__discount__percent">@sale%</div>
+												</div>
+												<div class="product__discount__item__text">
+													<a asp-action="CompanionDetails"
+													   asp-route-id="@item.CompanionId">
+														<span>@item.Service.ServiceName</span>
+														<h5>
+															@item.CompanionName
+														</h5>
+														@{
+															var priceAfterDiscount = item.CompanionPrice - (item.CompanionPrice *
+															item.CompanionSale / 100);
+														}
+														<div class="product__item__price">
+															@priceAfterDiscount JD
+															<span> @item.CompanionPrice JD</span>
+														</div>
+													</a>
+												</div>
+											</div>
+										</a>
+									</div>
+								}
 
-                            }
-                        </div>
-                    </div>
-                </div>
-                <div class="filter__item">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-5">
-                            <div class="filter__sort">
-                                <span>Service</span>
-                                <select id="ServiceFilter">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4">
-                            <div class="filter__found">
-                                <h6>
-                                    <span>
-                                        @{
-                                            var TotalProducts = (int)(ViewBag.Companions.Count);
-                                        }
-                                        @TotalProducts
-                                    </span> Products found
-                                </h6>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-3">
-                            <div class="filter__option">
-                                <span class="icon_grid-2x2"></span>
-                                <span class="icon_ul"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" id="productContainer">
-                    @foreach (var Companion in ViewBag.Companions)
-                    {
-                        var ServiceId = Companion.ServiceId;
-                        if (ViewBag.SelectedService == null || ServiceId == ViewBag.SelectedService)
-                        {
-                            <div class="col-lg-4 col-md-6 col-sm-6 @Companion.Service.ServiceName.ToLower()">
-                                <a asp-action="CompanionDetails"
-                                   asp-route-id="@Companion.CompanionId">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
-                                        @{
-                                                string imageBase64 = Convert.ToBase64String(Companion.Image);
-                                        }
+							}
+						</div>
+					</div>
+				</div>
+				<div class="filter__item">
+					<div class="row">
+						<div class="col-lg-4 col-md-5">
+							<div class="filter__sort">
+								<span>Service</span>
+								<select id="ServiceFilter">
+								</select>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4">
+							<div class="filter__found">
+								<h6>
+									<span>
+										@{
+											var TotalProducts = (int)(ViewBag.Companions.Count);
+										}
+										@TotalProducts
+									</span> Companions found
+								</h6>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-3">
+							<div class="filter__option">
+								<span class="icon_grid-2x2"></span>
+								<span class="icon_ul"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row" id="productContainer">
+					@foreach (var Companion in ViewBag.Companions)
+					{
+						var ServiceId = Companion.ServiceId;
+						if (ViewBag.SelectedService == null || ServiceId == ViewBag.SelectedService)
+						{
+							<div class="col-lg-4 col-md-6 col-sm-6 @Companion.Service.ServiceName.ToLower()">
+								<a asp-action="CompanionDetails"
+								   asp-route-id="@Companion.CompanionId">
+									<div class="product__item">
+										<div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
+											@{
+												string imageBase64 = Convert.ToBase64String(Companion.Image);
+											}
 
-                                        <img src="data:image;base64,@imageBase64">
-                                    </div> <a asp-action="CompanionDetails"
-                                                  asp-route-id="@Companion.CompanionId">
-                                    <div class="product__item__text">
-                                        <h6>
-                                                    @Companion.CompanionName
-                                        </h6>
-                                                @if (@Companion.CompanionSale > 0)
-                                        {
-                                                    decimal price = @Companion.CompanionPrice - (@Companion.CompanionPrice *
-                                                    @Companion.CompanionSale / 100);
-                                            <h5>
-                                                @price JD<br />
-                                                        <del style="color:gray; font-weight:300">@Companion.CompanionPrice JD</del>
-                                            </h5>
-                                        }
-                                        else
-                                        {
-                                                    <h5>@Companion.CompanionPrice JD</h5>
-                                        }
-                                    </div>
-                                        </a>
-                                    </div>
-                                </a>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
+											<img src="data:image;base64,@imageBase64">
+										</div> <a asp-action="CompanionDetails"
+										  asp-route-id="@Companion.CompanionId">
+											<div class="product__item__text">
+												<h6>
+													@Companion.CompanionName
+												</h6>
+												<div class="product__details__rating">
+
+													@if (Companion.Reviews.Count != 0)
+													{
+														int avgRate = 0;
+														foreach (var review in Companion.Reviews)
+														{
+															avgRate += review.ReviewRate;
+														}
+														avgRate = avgRate / Companion.Reviews.Count;
+														for (int i = 0; i < avgRate; i++)
+														{
+															<i class="fa fa-star" style="color: #ffc700;"></i>
+														}
+													}
+
+													<span>(@Companion.Reviews.Count)</span>
+												</div>
+												@if (@Companion.CompanionSale > 0)
+												{
+													decimal price = @Companion.CompanionPrice - (@Companion.CompanionPrice *
+													@Companion.CompanionSale / 100);
+													<h5>
+														@price JD<br />
+														<del style="color:gray; font-weight:300">@Companion.CompanionPrice JD</del>
+													</h5>
+												}
+												else
+												{
+													<h5>@Companion.CompanionPrice JD</h5>
+												}
+											</div>
+										</a>
+									</div>
+								</a>
+							</div>
+						}
+					}
+				</div>
+			</div>
+		</div>
+	</div>
 
 </section>
 <!-- Product Section End -->

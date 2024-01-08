@@ -14,22 +14,26 @@ namespace _Morafiq.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public HomeController(ApplicationDbContext context,RoleManager<IdentityRole> roleManager)
+		private readonly UserManager<User> _userManager;
+		public HomeController(ApplicationDbContext context,RoleManager<IdentityRole> roleManager,UserManager<User> userManager)
         {
             _context = context;
             _roleManager = roleManager;
+            _userManager = userManager;
         }
 
      
 
-        public IActionResult Index(string selectedService)
+        public async Task<IActionResult> IndexAsync(string selectedService)
         {
-            ViewBag.Companions = _context.Companions.Include(Companion => Companion.Service).ToList();
+			var user = await _userManager.GetUserAsync(User);
+           
+			ViewBag.Companions = _context.Companions.Include(Companion => Companion.Service).ToList();
             ViewBag.Services = _context.Services.Include(Service => Service.Companions).ToList();
             ViewBag.SelectedService = selectedService;
             ViewBag.CompanionImages = _context.CompanionImages.ToList();
             ViewBag.Testimonials = _context.Testimonials.Include(testimonial => testimonial.User).Where(testimonial => testimonial.TestimonialStatus == "Accept").Take(3).ToList();
-            return View();
+            return View(user);
         }
 
 

@@ -25,8 +25,8 @@
 				{
 					for (int i = 0; i < reader.FieldCount; i++)
 					{
-						var columnName = reader.GetName(i); 
-						var columnValue = reader.GetValue(i); 
+						var columnName = reader.GetName(i);
+						var columnValue = reader.GetValue(i);
 						userRow.Add(columnName, columnValue);
 					}
 				}
@@ -307,36 +307,36 @@
 						</ul>
 					</nav>
 				</div>
-				<div class="col-lg-3"
-				@if (signInManager.IsSignedIn(User) && userRow["Role"].ToString().ToUpper() ==
-									"USER")
-				{
-							<div class="header__cart">
-								<ul>
-									<li>
-										<a href="/Shop/UserCart">
-											<i class="fa fa-shopping-bag"></i>
-											<span>@cartRow["TotalQuantity"]</span>
-										</a>
-									</li>
-								</ul>
-								<div class="header__cart__price">
-									total: <span>
-								@cartRow["TotalPrice"]
-										JD
-									</span>
-								</div>
+				<div class="col-lg-3">
+					@if (signInManager.IsSignedIn(User) && userRow["Role"].ToString().ToUpper() ==
+										"USER")
+					{
+						<div class="header__cart">
+							<ul>
+								<li>
+									<a href="/Shop/UserCart">
+										<i class="fa fa-shopping-bag"></i>
+										<span>@cartRow["TotalQuantity"]</span>
+									</a>
+								</li>
+							</ul>
+							<div class="header__cart__price">
+								total: <span>
+									@cartRow["TotalPrice"]
+									JD
+								</span>
 							</div>
-				}
-				else
-				{
-							<div class="header__cart">
-								<ul>
-									<li><a><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
-								</ul>
-								<div class="header__cart__price">total: <span>0 JD</span></div>
-							</div>
-				}
+						</div>
+					}
+					else
+					{
+						<div class="header__cart">
+							<ul>
+								<li><a><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
+							</ul>
+							<div class="header__cart__price">total: <span>0 JD</span></div>
+						</div>
+					}
 				</div>
 			</div>
 			<div class="humberger__open">

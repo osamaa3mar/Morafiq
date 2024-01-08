@@ -1,6 +1,7 @@
 ﻿@model User
 @{
 	ViewData["Title"] = "Home Page";
+
 }
 <!-- Hero Section Begin -->
 <section class="hero">
@@ -16,16 +17,15 @@
 						@foreach (var item in ViewBag.Services)
 						{
 							<li>
-								<a
-									href="/Shop/Service?id=@item.ServiceId&selectedService=item.ServiceName">@item.ServiceName</a>
+								<a href="/Shop/Service?id=@item.ServiceId&selectedService=item.ServiceName">@item.ServiceName</a>
 							</li>
 						}
 					</ul>
 				</div>
 			</div>
 			<div class="col-lg-9">
-				<div class="hero__item set-bg" data-setbg="https://images.squarespace-cdn.com/content/v1/5801005046c3c4db81482439/1480996365819-6XOM93S2JBTBEBUVOPRQ/image-asset.jpeg">
-					<div class="hero__text" >
+				<div class="hero__item set-bg" data-setbg="https://st4.depositphotos.com/16122460/21054/i/450/depositphotos_210540818-stock-photo-helping-hands-blurred-background-closeup.jpg">
+					<div class="hero__text">
 						<span>Smart Phone</span>
 						<h2>Phones <br />100% Original</h2>
 						<p>Experience seamless convenience with our hassle-free delivery options</p>
@@ -41,19 +41,29 @@
 <section class="categories">
 	<div class="container">
 		<div class="row">
-			<div class="categories__slider owl-carousel">
-				@foreach (var item in ViewBag.Services)
-				{
-						<a href="/Shop/Service?id=@item.ServiceId">
-					<div class="col-lg-3">
+			<div class="col-lg-12">
+				<div class="section-title">
+					<h2>
+						Hi @(User.Identity.Name == null ? "" : Html.DisplayFor(model => model.FirstName)),
+						What kind of care do you need?
+					</h2>
+				</div>
+				<div class="categories__slider owl-carousel">
+					@foreach (var item in ViewBag.Services)
+					{
+
+						<div class="col-lg-3">
 							@{
 								string imageBase64 = Convert.ToBase64String(item.Image);
 							}
-						<img class="categories__item set-bg" src="data:image;base64,@imageBase64">
-						<h5 class="text-center">@item.ServiceName</h5>
-					</div>
-					</a>
-				}
+							<div class="categories__item set-bg" data-setbg="data:image;base64,@imageBase64">
+								@* <img class="categories__item set-bg" src="data:image;base64,@imageBase64"> *@
+								<h5><a href="/Shop/Service?id=@item.ServiceId">@item.ServiceName</a></h5>
+							</div>
+						</div>
+
+					}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -65,14 +75,15 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="section-title">
-					<h2>Featured Companion</h2>
+					<h2>Featured Companions</h2>
 				</div>
 				<div class="featured__controls">
 					<ul>
 						<li class="@(ViewBag.SelectedService == null ? " active" : "" )" data-filter="*">All</li>
 						@foreach (var Service in ViewBag.Services)
 						{
-							<li data-filter=".@Service.ServiceName.ToLower()">
+							string[] words = Service.ServiceName.Split(' ');
+							<li data-filter=".@words[0]">
 								@Service.ServiceName
 							</li>
 						}
@@ -93,12 +104,13 @@
 				if (ViewBag.SelectedService == null || ServiceId == ViewBag.SelectedService)
 				{
 					CompanionCounter--;
-					<div class="col-lg-3 col-md-4 col-sm-6 mix @Companion.Service.ServiceName.ToLower()">
-							<div class="featured__item">
+					string[] words = Companion.Service.ServiceName.Split(' ');
+					<div class="col-lg-3 col-md-4 col-sm-6 mix @words[0]">
+						<div class="featured__item">
 							@{
 								string imageBase64 = Convert.ToBase64String(Companion.Image);
 							}
-									<a asp-controller="Shop" asp-action="CompanionDetails"
+							<a asp-controller="Shop" asp-action="CompanionDetails"
 							   asp-route-id="@Companion.CompanionId">
 								<div class="featured__item__pic set-bg">
 									<img src="data:image;base64,@imageBase64">
@@ -116,9 +128,11 @@
 									else
 									{
 										<h5>@Companion.CompanionPrice JD</h5>
-									}</a>
+									}
 								</div>
-							</div>
+							</a>
+						</div>
+					</div>
 					@* </div> *@
 				}
 			}
@@ -128,7 +142,7 @@
 </section>
 <!-- Featured Section End -->
 <!-- Latest Companion Section Begin -->
-<section class="latest-Companion spad" style="padding-top: 0px;">
+<section class="latest-product spad" style="padding-top: 0px;">
 	<div class="section-title">
 		<h2>Sale</h2>
 	</div>
@@ -140,73 +154,73 @@
 			@foreach (var Service in (List<Service>)(ViewBag.Services))
 			{
 				c++;
-					<div class="col-lg-4 col-md-6">
-						<div class="latest-Companion__text">
+				<div class="col-lg-4 col-md-6">
+					<div class="latest-product__text">
 						<h4>@Service.ServiceName Sales</h4>
-							<div class="latest-Companion__slider owl-carousel">
+						<div class="latest-product__slider owl-carousel">
 							@for (int i = 1; i < 3; i++)
 							{
 								<div class="latest-prdouct__slider__item">
 									@if (i == 1)
 									{
 										@foreach (var Companion in Service.Companions.Where(p => p.CompanionSale >
-												0).Take(3).ToList())
+															0).Take(3).ToList())
 										{
 											string imageBase64 = Convert.ToBase64String(Companion.Image);
-												<a asp-controller="Shop" asp-action="CompanionDetails" asp-route-id="@Companion.CompanionId"
-													class="latest-Companion__item">
-													<div class="latest-Companion__item__pic">
-														<img src="data:image;base64,@imageBase64">
-													</div>
-													<div class="latest-Companion__item__text">
+											<a asp-controller="Shop" asp-action="CompanionDetails" asp-route-id="@Companion.CompanionId"
+											   class="latest-Companion__item">
+												<div class="latest-Companion__item__pic">
+													<img src="data:image;base64,@imageBase64">
+												</div>
+												<div class="latest-Companion__item__text">
 													<h6>@Companion.CompanionName</h6>
 													@{
 														decimal price = @Companion.CompanionPrice - (@Companion.CompanionPrice *
 														@Companion.CompanionSale / 100);
 													}
-														<span>
+													<span>
 														@price JD<br />
 														<del style="color:gray; font-weight:300">@Companion.CompanionPrice JD</del>
-														</span>
-													</div>
-												</a>
+													</span>
+												</div>
+											</a>
 										}
 									}
 									else
 									{
 										@foreach (var Companion in Service.Companions.Where(p => p.CompanionSale >
-												0).Skip(3).ToList())
+															0).Skip(3).ToList())
 										{
 											string imageBase64 = Convert.ToBase64String(Companion.Image);
-												<a asp-controller="Shop" asp-action="CompanionDetails" asp-route-id="@Companion.CompanionId"
-													class="latest-Companion__item">
-													<div class="latest-Companion__item__pic">
-														<img src="data:image;base64,@imageBase64">
-													</div>
-													<div class="latest-Companion__item__text">
-														<h6>@Companion.CompanionName</h6>
+											<a asp-controller="Shop" asp-action="CompanionDetails" asp-route-id="@Companion.CompanionId"
+											   class="latest-Companion__item">
+												<div class="latest-Companion__item__pic">
+													<img src="data:image;base64,@imageBase64">
+												</div>
+												<div class="latest-Companion__item__text">
+													<h6>@Companion.CompanionName</h6>
 													@{
 														decimal price = @Companion.CompanionPrice - (@Companion.CompanionPrice /
 														@Companion.CompanionSale);
 														price = Math.Round(price, 2);
 													}
-														<span>
+													<span>
 														@price JD<br />
-															<del style="color:gray; font-weight:300">@Companion.CompanionPrice JD</del>
-														</span>
-													</div>
-												</a>
+														<del style="color:gray; font-weight:300">@Companion.CompanionPrice JD</del>
+													</span>
+												</div>
+											</a>
 										}
 									}
 								</div>
 							}
 						</div>
 					</div>
-			</div>
+				</div>
 				if (c == 3)
 					break;
 			}
-	</div>
+		</div>
 	</div>
 </section>
 <!-- TESTIMONIALS -->
@@ -219,15 +233,15 @@
 			<div class="categories__slider owl-carousel">
 				@foreach (var testimonial in (List<Testimonial>)(ViewBag.Testimonials))
 				{
-						<div class="col-lg-3" style="    display: flex;flex-direction: column;align-items: center;">
+					<div class="col-lg-3" style="    display: flex;flex-direction: column;align-items: center;">
 						@{
 							string imageBase64 = Convert.ToBase64String(testimonial.User.Image);
 						}
-							<img src="data:image;base64,@imageBase64" style="width: 30%;border-radius: 50px;margin-bottom: 20px;">
-							<p class="testimonial-body text-center">
-								"@testimonial.TestimonialMessage ."
-							</p>
-						</div>
+						<img src="data:image;base64,@imageBase64" style="width: 30%;border-radius: 50px;margin-bottom: 20px;">
+						<p class="testimonial-body text-center">
+							"@testimonial.TestimonialMessage ."
+						</p>
+					</div>
 				}
 			</div>
 		</div>

@@ -26,8 +26,8 @@ namespace _Morafiq.Controllers
         public IActionResult Index(string selectedService)
         {
 
-
-            ViewBag.Companions = _context.Companions.ToList();
+            
+            ViewBag.Companions = _context.Companions.Include(review => review.Reviews).ToList();
             ViewBag.Services = _context.Services.ToList();
             ViewBag.SelectedService = selectedService;
             //ViewBag.CompanionImages = _context.CompanionImages.ToList();
@@ -38,7 +38,7 @@ namespace _Morafiq.Controllers
         public async Task<IActionResult> Service(int? id, string selectedService)
         {
 
-            ViewBag.Companions = _context.Companions.ToList();
+            ViewBag.Companions = _context.Companions.Include(review => review.Reviews).ToList();
             ViewBag.Services = _context.Services.ToList();
             ViewBag.SelectedService = selectedService;
             //ViewBag.CompanionImages = _context.CompanionImages.ToList();
