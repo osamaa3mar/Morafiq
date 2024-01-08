@@ -105,8 +105,8 @@ namespace _5Dots.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 try
                 {
                     using (var stream = FormFile.OpenReadStream())
@@ -131,9 +131,9 @@ namespace _5Dots.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(Service);
+                return RedirectToAction("Services", "Admin");
+            //}
+            //return View(Service);
         }
 
         // GET: Services/Delete/5
@@ -170,7 +170,7 @@ namespace _5Dots.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Services", "Admin");
         }
 
         private bool ServiceExists(int id)

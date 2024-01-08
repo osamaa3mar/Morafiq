@@ -1,190 +1,193 @@
 ﻿@{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-}   
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
 @model User
 <div class="iq-navbar-header" style="height: 215px;">
-              <div class="container-fluid iq-container">
-                  <div class="row">
-                      <div class="col-md-12">
-                          <div class="flex-wrap d-flex justify-content-between align-items-center">
-                              <div>
-                                  <h1>Hello @Model.FirstName!</h1>
-                        <p>Welcome, Admin! We appreciate your contributions to our mission.</p>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="iq-header-img">
-                  <img src="~/Admin_assets/images/dashboard/top-header.png" alt="header" class="theme-color-default-img img-fluid w-100 h-100 animated-scaleX">
-                  <img src="~/Admin_assets/images/dashboard/top-header1.png" alt="header" class="theme-color-purple-img img-fluid w-100 h-100 animated-scaleX">
-                  <img src="~/Admin_assets/images/dashboard/top-header2.png" alt="header" class="theme-color-blue-img img-fluid w-100 h-100 animated-scaleX">
-                  <img src="~/Admin_assets/images/dashboard/top-header3.png" alt="header" class="theme-color-green-img img-fluid w-100 h-100 animated-scaleX">
-                  <img src="~/Admin_assets/images/dashboard/top-header4.png" alt="header" class="theme-color-yellow-img img-fluid w-100 h-100 animated-scaleX">
-                  <img src="~/Admin_assets/images/dashboard/top-header5.png" alt="header" class="theme-color-pink-img img-fluid w-100 h-100 animated-scaleX">
-              </div>
-          </div>          <!-- Nav Header Component End -->
-        <!--Nav End-->
-      <div class="conatiner-fluid content-inner mt-n5 py-0">
-<div class="row">
-   <div class="col-md-12 col-lg-12">
-      <div class="row row-cols-1">
-                    <div class="col-lg-3 col-md-6">
-         <div class="card">
-            <div class="card-body">
-               <div class="d-flex justify-content-between align-items-center">
-                  <div class="bg-info text-white rounded p-3">
-                     <svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                     </svg>
-                  </div>
-                  <div class="text-end">
-                        @{
-                            var u = (int)(ViewBag.Users.Count);
-                        }
-                        Users
-                        <h2 class="counter">@u</h2>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="col-lg-3 col-md-6">
-         <div class="card">
-            <div class="card-body">
-               <div class="d-flex justify-content-between align-items-center">
-                  <div class="bg-warning text-white rounded p-3">
-                     <svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px"  viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                     </svg>
-                  </div>
-                  <div class="text-end">
-                    @{
-                        var o = (int)(ViewBag.Orders.Count);
-                    }
-                    Orders
-					<h2 class="counter">@o</h2>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="col-lg-3 col-md-6">
-         <div class="card">
-            <div class="card-body">
-               <div class="d-flex justify-content-between align-items-center">
-                  <div class="bg-success text-white rounded p-3">
-                     <svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px"  viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                     </svg>
-                  </div>
-                  <div class="text-end">
-                        @{
-                            var c = (int)(ViewBag.Categories.Count);
-                        }
-                                    Categories
-                        <h2 class="counter">@c</h2>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="col-lg-3 col-md-6">
-         <div class="card">
-            <div class="card-body">
-               <div class="d-flex justify-content-between align-items-center">
-                  <div class="bg-danger text-white rounded p-3">
-                     <svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px"  viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                     </svg>
-                  </div>
-                  <div class="text-end">
-                       @{var p = (int)(ViewBag.Products.Count);}
-                      Products
-                       <h2 class="counter">@p</h2>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      </div>
-   </div>
-   <div class="col-md-12 col-lg-8">
-      <div class="row">
-         <div class="col-md-12 col-lg-12">
-            <div class="overflow-hidden card" data-aos="fade-up" data-aos-delay="600">
-               <div class="flex-wrap card-header d-flex justify-content-between">
-                  <div class="header-title">
-                                <h4 class="mb-2 card-title">Stock Information</h4>
-                     <p class="mb-0">
-                        <svg class="me-2 text-primary icon-24" width="24" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-6h2zm0-8h-2V7h2z" />
-                        </svg>
-                        Shows current product availability status.
-                     </p>            
-                  </div>
-               </div>
-               <div class="p-0 card-body">
-                  <div class="mt-4 table-responsive">
-                     <table id="basic-table" class="table mb-0 table-striped" role="grid">
-                        <thead>
-                           <tr>
-                              <th>Product Name</th>
-                              <th>Category</th>
-                              <th>Stock</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                                        @foreach (var product in ((List<Companion>)(ViewBag.Companions)).Take(6))
-                            {
-                                <tr>
-                                                <td>@product.CompanionName</td>
-                                                <td>@product.Service.ServiceName</td>
-                                                <td>@product.CompanionQuantityStock</td>
-                                </tr>
-                            }
-                        </tbody>
-                     </table>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-   </div>
-   <div class="col-md-12 col-lg-4">
-      <div class="row">
-         <div class="col-md-12 col-lg-12">
-            <div class="card" data-aos="fade-up" data-aos-delay="600">
-               <div class="flex-wrap card-header d-flex justify-content-between">
-                  <div class="header-title">
-                    <h4 class="mb-2 card-title">Recent Payment History</h4>
-                    <p class="mb-0">
-                        <svg class="me-2 icon-24" width="24" height="24" viewBox="0 0 24 24">
-                            <path fill="#007BFF" d="M21,12c0,1.104-0.896,2-2,2h-4v4c0,1.104-0.896,2-2,2s-2-0.896-2-2v-4H5c-1.104,0-2-0.896-2-2s0.896-2,2-2h4V6c0-1.104,0.896-2,2-2s2,0.896,2,2v4h4C20.104,10,21,10.896,21,12z" />
-                        </svg>
-                        @{
-                            var TotalPayments = (int)(ViewBag.Payments.Count);
-                        }
-                        @TotalPayments Total Payments
-                    </p>
-                  </div>
-               </div>
-               <div class="card-body">
-                    @foreach (var payment in ((List<Payment>)(ViewBag.Payments)).Take(4))
-                    {
-                        <div class="mb-2 d-flex profile-media align-items-top">
-                            <div class="mt-1 profile-dots-pills border-primary"></div>
-                            <div class="ms-4">
-                                <h6 class="mb-1">@payment.Order.TotalPrice JD, Purchase</h6>
-                                <span class="mb-0">@payment.TransactionDate</span>
-                            </div>
-                        </div>
-                    }
+	<div class="container-fluid iq-container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="flex-wrap d-flex justify-content-between align-items-center">
+					<div>
+						<h1>Hello @Model.FirstName!</h1>
+						<p>Welcome, Admin! We appreciate your contributions to our mission.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="iq-header-img">
+		<img src="~/Admin_assets/images/dashboard/top-header.png" alt="header" class="theme-color-default-img img-fluid w-100 h-100 animated-scaleX">
+		<img src="~/Admin_assets/images/dashboard/top-header1.png" alt="header" class="theme-color-purple-img img-fluid w-100 h-100 animated-scaleX">
+		<img src="~/Admin_assets/images/dashboard/top-header2.png" alt="header" class="theme-color-blue-img img-fluid w-100 h-100 animated-scaleX">
+		<img src="~/Admin_assets/images/dashboard/top-header3.png" alt="header" class="theme-color-green-img img-fluid w-100 h-100 animated-scaleX">
+		<img src="~/Admin_assets/images/dashboard/top-header4.png" alt="header" class="theme-color-yellow-img img-fluid w-100 h-100 animated-scaleX">
+		<img src="~/Admin_assets/images/dashboard/top-header5.png" alt="header" class="theme-color-pink-img img-fluid w-100 h-100 animated-scaleX">
+	</div>
+</div>          <!-- Nav Header Component End -->
+<!--Nav End-->
+<div class="conatiner-fluid content-inner mt-n5 py-0">
+	<div class="row">
+		<div class="col-md-12 col-lg-12">
+			<div class="row row-cols-1">
+				<div class="col-lg-3 col-md-6">
+					<div class="card">
+						<div class="card-body">
+							<div class="d-flex justify-content-between align-items-center">
+								<div class="bg-info text-white rounded p-3">
+									<svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+									</svg>
+								</div>
+								<div class="text-end">
+									@{
 
-               </div>
-            </div>
-         </div>
-      </div>
-   </div> 
-</div>
+										var u = (int)(ViewBag.Users.Count ?? 0);
+									}
+									Users
+									<h2 class="counter">@u</h2>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6">
+					<div class="card">
+						<div class="card-body">
+							<div class="d-flex justify-content-between align-items-center">
+								<div class="bg-warning text-white rounded p-3">
+									<svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px" viewBox="0 0 20 20" fill="currentColor">
+										<path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+									</svg>
+								</div>
+								<div class="text-end">
+									@{
+										var o = (int)(ViewBag.Orders.Count ?? 0);
+									}
+									Orders
+									<h2 class="counter">@o</h2>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6">
+					<div class="card">
+						<div class="card-body">
+							<div class="d-flex justify-content-between align-items-center">
+								<div class="bg-success text-white rounded p-3">
+									<svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px" viewBox="0 0 20 20" fill="currentColor">
+										<path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+									</svg>
+								</div>
+								<div class="text-end">
+									@{
+										int c = (ViewBag.Services?.Count ?? 0);
+									}
+									Services
+									<h2 class="counter">@c</h2>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6">
+					<div class="card">
+						<div class="card-body">
+							<div class="d-flex justify-content-between align-items-center">
+								<div class="bg-danger text-white rounded p-3">
+									<svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px" viewBox="0 0 20 20" fill="currentColor">
+										<path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+									</svg>
+								</div>
+								<div class="text-end">
+									@{
+										var p = ViewBag.Companions != null ? (int)(ViewBag.Companions.Count) : 0;
+									}
+									Companions
+									<h2 class="counter">@p</h2>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12 col-lg-8">
+			<div class="row">
+				<div class="col-md-12 col-lg-12">
+					<div class="overflow-hidden card" data-aos="fade-up" data-aos-delay="600">
+						<div class="flex-wrap card-header d-flex justify-content-between">
+							<div class="header-title">
+								<h4 class="mb-2 card-title">Stock Information</h4>
+								<p class="mb-0">
+									<svg class="me-2 text-primary icon-24" width="24" viewBox="0 0 24 24">
+										<path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-6h2zm0-8h-2V7h2z" />
+									</svg>
+									Shows current Companion availability status.
+								</p>
+							</div>
+						</div>
+						<div class="p-0 card-body">
+							<div class="mt-4 table-responsive">
+								<table id="basic-table" class="table mb-0 table-striped" role="grid">
+									<thead>
+										<tr>
+											<th>Companion Name</th>
+											<th>Service</th>
+											<th>Stock</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach (var Companion in ((List<Companion>)(ViewBag.Companions)).Take(6))
+										{
+											<tr>
+												<td>@Companion.CompanionName</td>
+												<td>@Companion.Service.ServiceName</td>
+												<td>@Companion.CompanionQuantityStock</td>
+											</tr>
+										}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12 col-lg-4">
+			<div class="row">
+				<div class="col-md-12 col-lg-12">
+					<div class="card" data-aos="fade-up" data-aos-delay="600">
+						<div class="flex-wrap card-header d-flex justify-content-between">
+							<div class="header-title">
+								<h4 class="mb-2 card-title">Recent Payment History</h4>
+								<p class="mb-0">
+									<svg class="me-2 icon-24" width="24" height="24" viewBox="0 0 24 24">
+										<path fill="#007BFF" d="M21,12c0,1.104-0.896,2-2,2h-4v4c0,1.104-0.896,2-2,2s-2-0.896-2-2v-4H5c-1.104,0-2-0.896-2-2s0.896-2,2-2h4V6c0-1.104,0.896-2,2-2s2,0.896,2,2v4h4C20.104,10,21,10.896,21,12z" />
+									</svg>
+									@{
+										var TotalPayments = (int)(ViewBag.Payments.Count);
+									}
+									@TotalPayments Total Payments
+								</p>
+							</div>
+						</div>
+						<div class="card-body">
+							@foreach (var payment in ((List<Payment>)(ViewBag.Payments)).Take(4))
+							{
+								<div class="mb-2 d-flex profile-media align-items-top">
+									<div class="mt-1 profile-dots-pills border-primary"></div>
+									<div class="ms-4">
+										<h6 class="mb-1">@payment.Order.TotalPrice JD, Purchase</h6>
+										<span class="mb-0">@payment.TransactionDate</span>
+									</div>
+								</div>
+							}
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
