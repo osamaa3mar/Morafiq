@@ -148,15 +148,24 @@
 	<div class="humberger__menu__overlay"></div>
 	<div class="humberger__menu__wrapper">
 		<div class="humberger__menu__logo">
-			<a href="/Home/Index"><img src="~/assets/img/logo2.png" alt=""></a>
+			<a href="/Home/Index"><img src="~/assets/img/logo.png" alt=""></a>
 		</div>
+		@if (signInManager.IsSignedIn(User) && userRow["Role"].ToString().ToUpper() ==
+										"USER")
+					{
 		<div class="humberger__menu__cart">
 			<ul>
 				<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-				<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+				<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>@cartRow["TotalQuantity"]</span></a></li>
 			</ul>
-			<div class="header__cart__price">item: <span>$150.00</span></div>
+			<div class="header__cart__price">
+				item: <span>
+					@cartRow["TotalPrice"]
+					JD
+				</span>
+			</div>
 		</div>
+					}
 		<div class="humberger__menu__widget">
 			@if (signInManager.IsSignedIn(User))
 			{
@@ -295,7 +304,7 @@
 			<div class="row">
 				<div class="col-lg-3">
 					<div class="header__logo">
-						<a href="/Home/Index">Morafiq</a>
+						<a href="/Home/Index"><img src="~/assets/img/logo.jpg"></a>
 					</div>
 				</div>
 				<div class="col-lg-6">
@@ -334,7 +343,12 @@
 							<ul>
 								<li><a><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
 							</ul>
-							<div class="header__cart__price">total: <span>0 JD</span></div>
+							<div class="header__cart__price">
+								total: <span>
+									0
+									JD
+								</span>
+							</div>
 						</div>
 					}
 				</div>

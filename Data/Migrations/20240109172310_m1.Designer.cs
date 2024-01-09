@@ -12,7 +12,7 @@ using _Morafiq.Data;
 namespace _Morafiq.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240105211323_m1")]
+    [Migration("20240109172310_m1")]
     partial class m1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,6 +104,10 @@ namespace _Morafiq.Data.Migrations
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("contentType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -111,6 +115,8 @@ namespace _Morafiq.Data.Migrations
                     b.HasKey("CompanionId");
 
                     b.HasIndex("ServiceId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Companions");
                 });
@@ -143,6 +149,31 @@ namespace _Morafiq.Data.Migrations
                     b.HasIndex("CompanionId");
 
                     b.ToTable("CompanionImages");
+                });
+
+            modelBuilder.Entity("_Morafiq.Models.CompanionSchedule", b =>
+                {
+                    b.Property<int>("ScheduleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleId"), 1L, 1);
+
+                    b.Property<int>("CompanionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ScheduleDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ScheduleId");
+
+                    b.HasIndex("CompanionId");
+
+                    b.ToTable("CompanionSchedule");
                 });
 
             modelBuilder.Entity("_Morafiq.Models.Order", b =>
@@ -621,10 +652,29 @@ namespace _Morafiq.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("_Morafiq.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Service");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("_Morafiq.Models.CompanionImage", b =>
+                {
+                    b.HasOne("_Morafiq.Models.Companion", "Companion")
+                        .WithMany()
+                        .HasForeignKey("CompanionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Companion");
+                });
+
+            modelBuilder.Entity("_Morafiq.Models.CompanionSchedule", b =>
                 {
                     b.HasOne("_Morafiq.Models.Companion", "Companion")
                         .WithMany()

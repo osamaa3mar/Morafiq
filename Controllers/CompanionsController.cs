@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using _Morafiq.Data;
 using _Morafiq.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace _Morafiq.Controllers
 {
@@ -19,11 +22,16 @@ namespace _Morafiq.Controllers
             _context = context;
         }
 
-        // GET: Companions
-        public async Task<IActionResult> Index()
+		// GET: Companions
+		[Authorize(Roles = "COMPANION")]
+		public IActionResult Index()
         {
-            var applicationDbContext = _context.Companions.Include(p => p.Service);
-            return View(await applicationDbContext.ToListAsync());
+            var Id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = _context.Users.Where(user => user.Id == Id).SingleOrDefault();
+            ViewBag.Services = _context.Services.ToList();
+            ViewBag.Companions = _context.Companions.Include(product => product.Service).ToList();
+            ViewBag.Payments = _context.Payments.Include(payment => payment.Order).ThenInclude(order => order.User).ToList();
+            return View(user);
         }
 
         // GET: Companions/Details/5
@@ -48,9 +56,11 @@ namespace _Morafiq.Controllers
         // GET: Companions/Create
         public IActionResult Create()
         {
-            ViewData["ServiceId"] = new SelectList(_context.Services, "ServiceId", "ServiceName");
+            ViewBag.ServiceId = new SelectList(_context.Services, "ServiceId", "ServiceName");
+            ViewBag.UserId = new SelectList(_context.Users.Where(n => n.Role != "ADMIN" ), "Id", "Email");
             return View();
         }
+
 
         // POST: Companions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -71,11 +81,16 @@ namespace _Morafiq.Controllers
 
                 Companion.ImageName = FormFile.FileName;
                 Companion.contentType = FormFile.ContentType;
-
+                Companion.User = _context.Users.Where(n => n.Id == Companion.UserId).FirstOrDefault();
+                Companion.CompanionName = Companion.User.FirstName + " " + Companion.User.LastName;
+                Companion.User.Role = "COMPANION";
+                var userRole =  _context.UserRoles.Where(c => c.UserId == Companion.UserId).FirstOrDefault();
+                userRole.RoleId = "3";
+                _context.Update(userRole);
 
                 _context.Add(Companion);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Services","Admin");
 
             }
             else
@@ -155,7 +170,7 @@ namespace _Morafiq.Controllers
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+			return RedirectToAction("Services", "Admin");
             //}
             //ViewData["ServiceId"] = new SelectList(_context.Services, "ServiceId", "ServiceName", Companion.ServiceId);
             //return View(Companion);
@@ -196,8 +211,8 @@ namespace _Morafiq.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+			return RedirectToAction("Services", "Admin");
+		}
 
         private bool CompanionExists(int id)
         {

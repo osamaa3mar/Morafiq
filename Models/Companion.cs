@@ -2,7 +2,7 @@
 
 namespace _Morafiq.Models
 {
-    public class Companion
+    public class Companion 
     {
         [Key]
         public int CompanionId { get; set; }
@@ -30,7 +30,14 @@ namespace _Morafiq.Models
 
         public Service ? Service { get; set; }
 
-        [Required]
+		[Required(ErrorMessage = "User ID is required")]
+		public string UserId { get; set; }
+
+		public User? User { get; set; }
+
+       
+
+		[Required]
         public string ImageName { get; set; }
         [Required]
         public string contentType { get; set; }

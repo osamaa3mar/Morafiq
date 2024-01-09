@@ -96,7 +96,7 @@ namespace _Morafiq.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -118,7 +118,7 @@ namespace _Morafiq.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,7 +156,7 @@ namespace _Morafiq.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -178,7 +178,7 @@ namespace _Morafiq.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -199,7 +199,7 @@ namespace _Morafiq.Data.Migrations
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "OrderId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -214,6 +214,7 @@ namespace _Morafiq.Data.Migrations
                     CompanionQuantityStock = table.Column<int>(type: "int", nullable: false),
                     CompanionSale = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ServiceId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ImageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     contentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
@@ -222,11 +223,17 @@ namespace _Morafiq.Data.Migrations
                 {
                     table.PrimaryKey("PK_Companions", x => x.CompanionId);
                     table.ForeignKey(
+                        name: "FK_Companions_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Companions_Services_ServiceId",
                         column: x => x.ServiceId,
                         principalTable: "Services",
                         principalColumn: "ServiceId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -245,13 +252,13 @@ namespace _Morafiq.Data.Migrations
                         column: x => x.CartId,
                         principalTable: "Carts",
                         principalColumn: "CartId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CartCompanions_Companions_CompanionId",
                         column: x => x.CompanionId,
                         principalTable: "Companions",
                         principalColumn: "CompanionId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -273,7 +280,28 @@ namespace _Morafiq.Data.Migrations
                         column: x => x.CompanionId,
                         principalTable: "Companions",
                         principalColumn: "CompanionId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CompanionSchedule",
+                columns: table => new
+                {
+                    ScheduleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompanionId = table.Column<int>(type: "int", nullable: false),
+                    ScheduleDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompanionSchedule", x => x.ScheduleId);
+                    table.ForeignKey(
+                        name: "FK_CompanionSchedule_Companions_CompanionId",
+                        column: x => x.CompanionId,
+                        principalTable: "Companions",
+                        principalColumn: "CompanionId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -292,13 +320,13 @@ namespace _Morafiq.Data.Migrations
                         column: x => x.CompanionId,
                         principalTable: "Companions",
                         principalColumn: "CompanionId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_OrderCompanion_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "OrderId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -322,13 +350,13 @@ namespace _Morafiq.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reviews_Companions_CompanionId",
                         column: x => x.CompanionId,
                         principalTable: "Companions",
                         principalColumn: "CompanionId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -350,6 +378,16 @@ namespace _Morafiq.Data.Migrations
                 name: "IX_Companions_ServiceId",
                 table: "Companions",
                 column: "ServiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Companions_UserId",
+                table: "Companions",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CompanionSchedule_CompanionId",
+                table: "CompanionSchedule",
+                column: "CompanionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderCompanion_CompanionId",
@@ -392,7 +430,7 @@ namespace _Morafiq.Data.Migrations
                 column: "RoleId",
                 principalTable: "AspNetRoles",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUserClaims_AspNetUsers_UserId",
@@ -400,7 +438,7 @@ namespace _Morafiq.Data.Migrations
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUserLogins_AspNetUsers_UserId",
@@ -408,7 +446,7 @@ namespace _Morafiq.Data.Migrations
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
@@ -416,7 +454,7 @@ namespace _Morafiq.Data.Migrations
                 column: "RoleId",
                 principalTable: "AspNetRoles",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUserRoles_AspNetUsers_UserId",
@@ -424,7 +462,7 @@ namespace _Morafiq.Data.Migrations
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUserTokens_AspNetUsers_UserId",
@@ -432,7 +470,7 @@ namespace _Morafiq.Data.Migrations
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -466,6 +504,9 @@ namespace _Morafiq.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "CompanionImages");
+
+            migrationBuilder.DropTable(
+                name: "CompanionSchedule");
 
             migrationBuilder.DropTable(
                 name: "OrderCompanion");

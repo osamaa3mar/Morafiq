@@ -4,50 +4,39 @@
     ViewData["Title"] = "Create";
 }
 <style>
-    .registration-form {
-        background-color: #fff;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        width: 400px;
+    /* Your existing styles remain unchanged */
+
+    .role-selection {
+        display: flex;
+        justify-content: space-between;
     }
 
-    .registration-header {
-        text-align: center;
-        font-size: 24px;
-        color: #28a745;
-        margin-bottom: 20px;
-    }
-
-    .form-label {
-        font-weight: bold;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    .submit-btn {
-        background-color: #28a745;
-        color: #fff;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
+    .role-radio {
+        margin-right: 10px;
     }
 </style>
-<div class="container" style="display: flex;justify-content: center;">
+<div class="container" style="display: flex; justify-content: center;">
     <div class="registration-form">
         <div class="registration-header">
             Joining Morafiq
         </div>
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="role-selection mb-3">
+                <div class="form-check role-radio">
+                    <input class="form-check-input" type="radio" name="UserRole" id="CompanionRole" value="Companion" asp-for="Role">
+                    <label class="form-check-label" asp-for="Role">
+                        Register as Companion
+                    </label>
+                </div>
+                <div class="form-check role-radio">
+                    <input class="form-check-input" type="radio" name="UserRole" id="CustomerRole" value="User" asp-for="Role" checked>
+                    <label class="form-check-label" asp-for="Role">
+                        Register as Customer
+                    </label>
+                </div>
+            </div>
 
             <div class="mb-3">
                 <label asp-for="FirstName" class="form-label"></label>

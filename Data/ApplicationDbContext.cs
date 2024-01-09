@@ -1,6 +1,7 @@
 ﻿using _Morafiq.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace _Morafiq.Data
 {
@@ -17,6 +18,7 @@ namespace _Morafiq.Data
         public DbSet<Testimonial> Testimonials { get; set; }
         public DbSet<Visa> Visa { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<CompanionSchedule> CompanionSchedule { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -32,7 +34,12 @@ namespace _Morafiq.Data
 
             builder.Entity<CartCompanion>()
                           .HasKey(os => new { os.CartId, os.CompanionId });
-        }
+			builder.Entity<Companion>()
+		    .HasOne(c => c.User)
+		    .WithMany()
+		    .HasForeignKey(c => c.UserId)
+		    .IsRequired();
+		}
 
         public DbSet<_Morafiq.Models.OrderCompanion>? OrderCompanion { get; set; }
     }

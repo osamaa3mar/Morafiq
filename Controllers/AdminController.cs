@@ -47,7 +47,7 @@ namespace _Morafiq.Controllers
             ViewBag.Orders = _context.Orders.Include(order => order.User).ToList();
             return View(user);
         }
-        public IActionResult ProductReviews()
+        public IActionResult CompanionReviews()
         {
             var Id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var user = _context.Users.Where(user => user.Id == Id).SingleOrDefault();

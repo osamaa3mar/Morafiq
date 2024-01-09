@@ -74,12 +74,12 @@ namespace _Morafiq.Controllers
             User.NormalizedEmail = User.Email.ToUpper();
             User.NormalizedUserName = User.Email.ToUpper();
             User.UserName = User.Email;
-            User.Role = "User";
+            //User.Role = "User";
 
             var result = await _userManager.CreateAsync(User, Password);
 
             var Id = User.Id;
-            var roleId = "2";
+            var roleId = (User.Role == "User") ? "2" : "3";
             var userRole = new IdentityUserRole<string>
             {
                 UserId = Id,

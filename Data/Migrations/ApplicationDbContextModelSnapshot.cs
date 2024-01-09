@@ -102,6 +102,10 @@ namespace WebApplication3.Data.Migrations
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("contentType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -109,6 +113,8 @@ namespace WebApplication3.Data.Migrations
                     b.HasKey("CompanionId");
 
                     b.HasIndex("ServiceId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Companions");
                 });
@@ -141,6 +147,31 @@ namespace WebApplication3.Data.Migrations
                     b.HasIndex("CompanionId");
 
                     b.ToTable("CompanionImages");
+                });
+
+            modelBuilder.Entity("_Morafiq.Models.CompanionSchedule", b =>
+                {
+                    b.Property<int>("ScheduleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleId"), 1L, 1);
+
+                    b.Property<int>("CompanionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ScheduleDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ScheduleId");
+
+                    b.HasIndex("CompanionId");
+
+                    b.ToTable("CompanionSchedule");
                 });
 
             modelBuilder.Entity("_Morafiq.Models.Order", b =>
@@ -619,10 +650,29 @@ namespace WebApplication3.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("_Morafiq.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Service");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("_Morafiq.Models.CompanionImage", b =>
+                {
+                    b.HasOne("_Morafiq.Models.Companion", "Companion")
+                        .WithMany()
+                        .HasForeignKey("CompanionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Companion");
+                });
+
+            modelBuilder.Entity("_Morafiq.Models.CompanionSchedule", b =>
                 {
                     b.HasOne("_Morafiq.Models.Companion", "Companion")
                         .WithMany()
