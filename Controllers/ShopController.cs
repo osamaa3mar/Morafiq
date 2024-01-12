@@ -77,7 +77,8 @@ namespace _Morafiq.Controllers
             {
                 return NotFound();
             }
-			ViewBag.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; ;
+			ViewBag.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            ViewBag.CompanionSchedules = _context.CompanionSchedule.Where(s => s.CompanionId == id).ToList();
             return View(Companion);
         }
         public IActionResult UserCart()
@@ -97,14 +98,13 @@ namespace _Morafiq.Controllers
             cart.TotalQuantity--;
             if (Companion.CompanionSale > 0)
             {
-                cart.TotalPrice -= cartCompanion.CompanionQuantity * (Companion.CompanionPrice - (Companion.CompanionPrice * Companion.CompanionSale / 100));
+                cart.TotalPrice -=  (Companion.CompanionPrice - (Companion.CompanionPrice * Companion.CompanionSale / 100));
 
             }
             else
             {
-                cart.TotalPrice -= cartCompanion.CompanionQuantity * Companion.CompanionPrice;
+                cart.TotalPrice -=  Companion.CompanionPrice;
             }
-            Companion.CompanionQuantityStock += cartCompanion.CompanionQuantity;
             _context.Remove(cartCompanion);
             await _context.SaveChangesAsync();
             _context.Update(Companion);
@@ -120,9 +120,7 @@ namespace _Morafiq.Controllers
             CartCompanion cartCompanion = _context.CartCompanions.Include(cartP => cartP.Companion).Where(cartP => cartP.CompanionId == CompanionId && cartP.CartId == CartId).SingleOrDefault();
             Cart cart = _context.Carts.Where(cart => cart.CartId == CartId).SingleOrDefault();
 
-            if (cartCompanion.CompanionQuantity > 1)
-            {
-                cartCompanion.CompanionQuantity--;
+            
                 if (Companion.CompanionSale > 0)
                 {
                     cart.TotalPrice -= (@Companion.CompanionPrice - (@Companion.CompanionPrice * @Companion.CompanionSale / 100));
@@ -131,26 +129,14 @@ namespace _Morafiq.Controllers
                 {
                     cart.TotalPrice -= Companion.CompanionPrice;
                 }
-                Companion.CompanionQuantityStock++;
                 _context.Update(cartCompanion);
                 await _context.SaveChangesAsync();
                 _context.Update(cart);
                 await _context.SaveChangesAsync();
                 _context.Update(Companion);
                 await _context.SaveChangesAsync();
-            }
-            else if(cartCompanion.CompanionQuantity == 1) {
-                cart.TotalQuantity--;
-                cart.TotalPrice -= cartCompanion.Companion.CompanionPrice;
-                Companion.CompanionQuantityStock++;
-                _context.Remove(cartCompanion);
-                await _context.SaveChangesAsync();
-                _context.Update(Companion);
-                await _context.SaveChangesAsync();
-                _context.Update(cart);
-                await _context.SaveChangesAsync();
-            }
- 
+            
+            
             return RedirectToAction("UserCart");
         }
         public async Task<IActionResult> AddOneItemToCompanion(int CompanionId, int CartId)
@@ -158,7 +144,6 @@ namespace _Morafiq.Controllers
             Companion Companion = _context.Companions.Where(Companion => Companion.CompanionId == CompanionId).SingleOrDefault();
             CartCompanion cartCompanion = _context.CartCompanions.Include(cartP => cartP.Companion).Where(cartP => cartP.CompanionId == CompanionId && cartP.CartId == CartId).SingleOrDefault();
             Cart cart = _context.Carts.Where(cart => cart.CartId == CartId).SingleOrDefault();
-            cartCompanion.CompanionQuantity++;
             if (Companion.CompanionSale > 0)
             {
                 cart.TotalPrice += (@Companion.CompanionPrice - (@Companion.CompanionPrice * @Companion.CompanionSale / 100));
@@ -167,7 +152,6 @@ namespace _Morafiq.Controllers
             {
                 cart.TotalPrice += Companion.CompanionPrice;
             }
-            Companion.CompanionQuantityStock--;
             _context.Update(cartCompanion);
             await _context.SaveChangesAsync();
             _context.Update(cart);
@@ -201,7 +185,7 @@ namespace _Morafiq.Controllers
                 OrderCompanion orderCompanion = new OrderCompanion();
                 orderCompanion.CompanionId = cartCompanion.CompanionId;
                 orderCompanion.OrderId= order.OrderId;
-                orderCompanion.CompanionQuantity = cartCompanion.CompanionQuantity;
+                orderCompanion.CompanionQuantity = 1;
                 _context.Add(orderCompanion);
                 await _context.SaveChangesAsync();
                 _context.Remove(cartCompanion);

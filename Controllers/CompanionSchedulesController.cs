@@ -22,7 +22,7 @@ namespace _Morafiq.Controllers
         // GET: CompanionSchedules
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.CompanionSchedule.Include(c => c.Companion);
+            var applicationDbContext = _context.CompanionSchedule.Include(c => c.Companion).Include(c => c.User);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -36,6 +36,7 @@ namespace _Morafiq.Controllers
 
             var companionSchedule = await _context.CompanionSchedule
                 .Include(c => c.Companion)
+                .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.ScheduleId == id);
             if (companionSchedule == null)
             {
@@ -49,6 +50,7 @@ namespace _Morafiq.Controllers
         public IActionResult Create()
         {
             ViewData["CompanionId"] = new SelectList(_context.Companions, "CompanionId", "CompanionDescription");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -57,16 +59,17 @@ namespace _Morafiq.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ScheduleId,CompanionId,ScheduleDate,Status")] CompanionSchedule companionSchedule)
+        public async Task<IActionResult> Create([Bind("ScheduleId,CompanionId,StartDate,EndDate,UserId,Status")] CompanionSchedule companionSchedule)
         {
-            //if (ModelState.IsValid)
-            //{
+            if (ModelState.IsValid)
+            {
                 _context.Add(companionSchedule);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["CompanionId"] = new SelectList(_context.Companions, "CompanionId", "CompanionDescription", companionSchedule.CompanionId);
-            //return View(companionSchedule);
+            }
+            ViewData["CompanionId"] = new SelectList(_context.Companions, "CompanionId", "CompanionDescription", companionSchedule.CompanionId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", companionSchedule.UserId);
+            return View(companionSchedule);
         }
 
         // GET: CompanionSchedules/Edit/5
@@ -83,6 +86,7 @@ namespace _Morafiq.Controllers
                 return NotFound();
             }
             ViewData["CompanionId"] = new SelectList(_context.Companions, "CompanionId", "CompanionDescription", companionSchedule.CompanionId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", companionSchedule.UserId);
             return View(companionSchedule);
         }
 
@@ -91,7 +95,7 @@ namespace _Morafiq.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ScheduleId,CompanionId,ScheduleDate,Status")] CompanionSchedule companionSchedule)
+        public async Task<IActionResult> Edit(int id, [Bind("ScheduleId,CompanionId,StartDate,EndDate,UserId,Status")] CompanionSchedule companionSchedule)
         {
             if (id != companionSchedule.ScheduleId)
             {
@@ -119,6 +123,7 @@ namespace _Morafiq.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CompanionId"] = new SelectList(_context.Companions, "CompanionId", "CompanionDescription", companionSchedule.CompanionId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", companionSchedule.UserId);
             return View(companionSchedule);
         }
 
@@ -132,6 +137,7 @@ namespace _Morafiq.Controllers
 
             var companionSchedule = await _context.CompanionSchedule
                 .Include(c => c.Companion)
+                .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.ScheduleId == id);
             if (companionSchedule == null)
             {
@@ -164,5 +170,13 @@ namespace _Morafiq.Controllers
         {
           return (_context.CompanionSchedule?.Any(e => e.ScheduleId == id)).GetValueOrDefault();
         }
-    }
+		public async Task<IActionResult> EditCompanionScheduleStatus(int ScheduleId, string newStatus)
+		{
+			var CompanionSchedule = await _context.CompanionSchedule.FindAsync(ScheduleId);
+			CompanionSchedule.Status = newStatus;
+			_context.Update(CompanionSchedule);
+			await _context.SaveChangesAsync();
+			return RedirectToAction("Index", "Companions");
+		}
+	}
 }

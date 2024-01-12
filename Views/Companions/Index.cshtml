@@ -1,8 +1,8 @@
-﻿@model User
+﻿@model Companion
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_CompanionLayout.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_CompanionLayout.cshtml";
 }
 
 <div class="iq-navbar-header" style="height: 215px;">
@@ -11,7 +11,7 @@
 			<div class="col-md-12">
 				<div class="flex-wrap d-flex justify-content-between align-items-center">
 					<div>
-						<h1>Hello @Model.FirstName!</h1>
+						<h1>Hello @Model.User.FirstName</h1>
 						<p>Welcome our Companion We appreciate your contributions to our mission.</p>
 					</div>
 				</div>
@@ -32,27 +32,7 @@
 	<div class="row">
 		<div class="col-md-12 col-lg-12">
 			<div class="row row-cols-1">
-				<div class="col-lg-3 col-md-6">
-					<div class="card">
-						<div class="card-body">
-							<div class="d-flex justify-content-between align-items-center">
-								<div class="bg-info text-white rounded p-3">
-									<svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-									</svg>
-								</div>
-								<div class="text-end">
-									@{
 
-										var u = (int)(ViewBag.Users.Count ?? 0);
-									}
-									Users
-									<h2 class="counter">@u</h2>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
 				<div class="col-lg-3 col-md-6">
 					<div class="card">
 						<div class="card-body">
@@ -73,46 +53,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="card">
-						<div class="card-body">
-							<div class="d-flex justify-content-between align-items-center">
-								<div class="bg-success text-white rounded p-3">
-									<svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px" viewBox="0 0 20 20" fill="currentColor">
-										<path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-									</svg>
-								</div>
-								<div class="text-end">
-									@{
-										int c = (ViewBag.Services?.Count ?? 0);
-									}
-									Services
-									<h2 class="counter">@c</h2>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="card">
-						<div class="card-body">
-							<div class="d-flex justify-content-between align-items-center">
-								<div class="bg-danger text-white rounded p-3">
-									<svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20px" viewBox="0 0 20 20" fill="currentColor">
-										<path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-									</svg>
-								</div>
-								<div class="text-end">
-									@{
-										var p = ViewBag.Companions != null ? (int)(ViewBag.Companions.Count) : 0;
-									}
-									Companions
-									<h2 class="counter">@p</h2>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+
+
 			</div>
 		</div>
 		<div class="col-md-12 col-lg-8">
@@ -121,12 +63,12 @@
 					<div class="overflow-hidden card" data-aos="fade-up" data-aos-delay="600">
 						<div class="flex-wrap card-header d-flex justify-content-between">
 							<div class="header-title">
-								<h4 class="mb-2 card-title">Stock Information</h4>
+								<h4 class="mb-2 card-title">Orders Information</h4>
 								<p class="mb-0">
 									<svg class="me-2 text-primary icon-24" width="24" viewBox="0 0 24 24">
 										<path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-6h2zm0-8h-2V7h2z" />
 									</svg>
-									Shows current Companion availability status.
+									Shows current Orders status.
 								</p>
 							</div>
 						</div>
@@ -135,20 +77,52 @@
 								<table id="basic-table" class="table mb-0 table-striped" role="grid">
 									<thead>
 										<tr>
-											<th>Companion Name</th>
-											<th>Service</th>
-											<th>Stock</th>
+											<th>Customer Name</th>
+											<th>Customer Email</th>
+											<th>Date</th>
+											<th>Status</th>
 										</tr>
 									</thead>
 									<tbody>
-										@foreach (var Companion in ((List<Companion>)(ViewBag.Companions)).Take(6))
-										{
-											<tr>
-												<td>@Companion.CompanionName</td>
-												<td>@Companion.Service.ServiceName</td>
-												<td>@Companion.CompanionQuantityStock</td>
-											</tr>
+										@{
+
 										}
+										<tr>
+											@foreach (var companionSchedule in ((List<CompanionSchedule>)ViewBag.CompanionSchedule))
+											{
+												<td>@companionSchedule.User.FirstName @companionSchedule.User.LastName</td>
+												<td>@companionSchedule.User.Email</td>
+												<td>@companionSchedule.StartDate.ToString("dd-MM-yyyy") -- @companionSchedule.EndDate.ToString("dd-MM-yyyy")</td>
+
+												<td>
+													<select asp-for="@companionSchedule.Status" onchange="confirmUpdateStatus('@companionSchedule.ScheduleId', this.value, '@companionSchedule.Status')">
+														@if (companionSchedule.Status == "Pending")
+														{
+															<option value="Pending" selected>Pending</option>
+															<option value="Accept">Accept</option>
+															<option value="Reject">Reject</option>
+														}
+														else if (companionSchedule.Status == "Accept")
+														{
+															<option value="Pending">Pending</option>
+															<option value="Accept" selected>Accept</option>
+															<option value="Reject">Reject</option>
+														}
+														else if (companionSchedule.Status == "Reject")
+														{
+															<option value="Pending">Pending</option>
+															<option value="Accept">Accept</option>
+															<option value="Reject" selected>Reject</option>
+														}
+													</select>
+												</td>
+
+											}
+
+
+
+										</tr>
+
 									</tbody>
 								</table>
 							</div>
@@ -192,5 +166,26 @@
 				</div>
 			</div>
 		</div>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script>
+			function confirmUpdateStatus(ScheduleId, newStatus, currentStatus) {
+				Swal.fire({
+					title: 'Are you sure?',
+					text: 'Do you really want to change the status?',
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Yes, update it!'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						window.location.href = `/CompanionSchedules/EditCompanionScheduleStatus?ScheduleId=${ScheduleId}&newStatus=${newStatus}`;
+					} else {
+						document.querySelector(`[value="${currentStatus}"]`).selected = true;
+					}
+				});
+			}
+		</script>
+
 	</div>
 </div>

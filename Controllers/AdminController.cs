@@ -21,8 +21,10 @@ namespace _Morafiq.Controllers
             var user = _context.Users.Where(user => user.Id == Id).SingleOrDefault();
             ViewBag.Users = _context.Users.Where(user => user.Role == "User").ToList();
             ViewBag.Orders = _context.Orders.ToList();
-            ViewBag.Services = _context.Services.ToList();
-            ViewBag.Companions = _context.Companions.Include(product => product.Service).ToList();
+            ViewBag.Services = _context.Services.ToList(); 
+
+		    ViewBag.CompanionSchedule = _context.CompanionSchedule.Include(s => s.Companion).ThenInclude(Companion => Companion.User).ToList();
+			ViewBag.Companions = _context.Companions.Include(product => product.Service).ToList();
             ViewBag.Payments = _context.Payments.Include(payment => payment.Order).ThenInclude(order => order.User).ToList();
             return View(user);
         }

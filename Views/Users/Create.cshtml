@@ -14,6 +14,9 @@
     .role-radio {
         margin-right: 10px;
     }
+    .hidestuff{
+        display:none;
+    }
 </style>
 <div class="container" style="display: flex; justify-content: center;">
     <div class="registration-form">
@@ -26,7 +29,7 @@
             <div class="mb-3 role-selection">
                 <label class="form-label">Select Role:</label>
                 <div class="form-check role-radio">
-                    <input class="form-check-input" type="radio" name="Role" value="Customer" checked>
+                    <input class="form-check-input" type="radio" name="Role" value="User" checked>
                     <label class="form-check-label" for="Role">Customer</label>
                 </div>
                 <div class="form-check role-radio">
@@ -51,9 +54,19 @@
                 <input asp-for="Email" class="form-control">
             </div>
 
-            <div class="mb-3">
-                <label asp-for="PhoneNumber" class="form-label"></label>
-                <input asp-for="PhoneNumber" class="form-control">
+            <div class="mb-3 hidestuff">
+                <label for="CompanionDescription" class="form-label">Companion Description:</label>
+                <input for="CompanionDescription" name="CompanionDescription" class="form-control">
+            </div>
+
+            <div class="mb-3 hidestuff">
+                <label for="CompanionPrice" class="form-label">Companion Price:</label>
+                <input for="CompanionPrice" name="CompanionPrice" class="form-control">
+            </div>
+
+            <div class="form-group hidestuff">
+                <label for="ServiceId" class="control-label">Service :</label>
+                <select for="ServiceId" name="ServiceId" class="form-control" asp-items="ViewBag.ServiceId"></select>
             </div>
 
             <div class="mb-3">
@@ -77,7 +90,31 @@
         </form>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the radio buttons and hidden elements
+        let choice = document.querySelectorAll('.form-check-input');
+        let hiddenStuff = document.querySelectorAll('.hidestuff');
 
+        // Add event listener to each radio button
+        choice.forEach(function (radio) {
+            radio.addEventListener('change', function () {
+                // Check the value of the selected radio button
+                if (radio.value === 'Companion') {
+                    // Show hidden elements if Companion is selected
+                    hiddenStuff.forEach(function (element) {
+                        element.style.display = 'block';
+                    });
+                } else {
+                    // Hide elements if Customer is selected
+                    hiddenStuff.forEach(function (element) {
+                        element.style.display = 'none';
+                    });
+                }
+            });
+        });
+    });
+</script>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

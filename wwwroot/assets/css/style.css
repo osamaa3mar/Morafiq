@@ -165,7 +165,7 @@ ol {
 	display: inline-block;
 	font-size: 14px;
 	padding: 10px 28px 10px;
-	color: #ffffff;
+	color: white;
 	text-transform: uppercase;
 	font-weight: 700;
 	background: #57c3c3;
@@ -776,7 +776,7 @@ ol {
 
 .hero__text {
 	font-size: 24px;
-	color: #333;
+	color: #000;
 	margin-bottom: 10px;
 }
 
@@ -784,7 +784,7 @@ ol {
 	display: inline-block;
 	font-size: 14px;
 	padding: 10px 28px 10px;
-	color: #ffffff;
+	color: white;
 	text-transform: uppercase;
 	font-weight: 700;
 	background: #7fad39;
@@ -821,8 +821,8 @@ ol {
 	font-size: 16px;
 	text-align: center;
 	text-decoration: none;
-	background-color: #007bff;
-	color: #fff;
+	background-color: #57c3c3;
+	color: white;
 	border-radius: 5px;
 }
 
@@ -834,7 +834,7 @@ ol {
 .hero__text {
 	position: absolute;
 	text-align:start;
-	color: #fff; /* Set text color to make it visible on the background */
+	color: #000; /* Set text color to make it visible on the background */
 }
 
 .hero__image {

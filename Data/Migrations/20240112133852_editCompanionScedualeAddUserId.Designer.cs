@@ -3,17 +3,19 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using _Morafiq.Data;
 
 #nullable disable
 
-namespace WebApplication3.Data.Migrations
+namespace _Morafiq.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240112133852_editCompanionScedualeAddUserId")]
+    partial class editCompanionScedualeAddUserId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,11 +57,8 @@ namespace WebApplication3.Data.Migrations
                     b.Property<int>("CompanionId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("CompanionQuantity")
+                        .HasColumnType("int");
 
                     b.HasKey("CartId", "CompanionId");
 
@@ -163,10 +162,7 @@ namespace WebApplication3.Data.Migrations
                     b.Property<int>("CompanionId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime>("ScheduleDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")

@@ -49,6 +49,8 @@ namespace _Morafiq.Controllers
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewBag.ServiceId = new SelectList(_context.Services, "ServiceId", "ServiceName");
+
             return View();
         }
 
@@ -57,7 +59,7 @@ namespace _Morafiq.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(User User, string Role, string Password, string ConfirmPassword, IFormFile FormFile)
+        public async Task<IActionResult> Create(User User, string Role,string CompanionDescription,int CompanionPrice,int ServiceId, string Password, string ConfirmPassword, IFormFile FormFile)
         {
 
             //if (ModelState.IsValid)
@@ -90,7 +92,24 @@ namespace _Morafiq.Controllers
             if (Role == "Companion")
             {
                 Companion companion = new Companion();
-                companion.
+                companion.CompanionName = User.FirstName + " " + User.LastName;
+                companion.CompanionDescription = CompanionDescription;
+                companion.CompanionPrice = CompanionPrice;
+                companion.ServiceId = ServiceId;
+                companion.UserId = User.Id;
+                using (var stream = FormFile.OpenReadStream())
+                using (var reader = new BinaryReader(stream))
+                {
+                    var byteFile = reader.ReadBytes((int)stream.Length);
+                    companion.Image = byteFile;
+                }
+                companion.ImageName = FormFile.FileName;
+                companion.contentType = FormFile.ContentType;
+                _context.Add(companion);
+
+                _context.SaveChanges();
+
+                
             }
 
 

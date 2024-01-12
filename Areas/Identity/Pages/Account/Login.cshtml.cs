@@ -130,9 +130,13 @@ namespace _Morafiq.Areas.Identity.Pages.Account
                     {
                         return RedirectToAction("Index","Admin");
                     }
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
+					if (userRole.RoleId == "3")
+					{
+						return RedirectToAction("Index", "Companions");
+					}
+					return RedirectToAction("Index", "Home");
+				}
+				if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 }

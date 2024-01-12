@@ -1,6 +1,16 @@
-﻿@model _Morafiq.Models.Companion
+﻿@using Newtonsoft.Json
+@model _Morafiq.Models.Companion
 @{
 	ViewData["Title"] = "CompanionDetails";
+}
+@{
+	TimeSpan Period = new TimeSpan();
+	foreach (var Schedule in ((List<CompanionSchedule>)ViewBag.CompanionSchedules))
+	{
+		Period += Schedule.EndDate - Schedule.StartDate;
+
+	}
+	
 }
 <style>
 	.rate {
@@ -90,10 +100,10 @@
 					<p>@Model.CompanionDescription</p>
 					<form asp-controller="CartCompanions"
 						  asp-action="Create_" asp-route-id="@Model.CompanionId">
-						<div class="product__details__quantity">
+						<div style="display:none;" class="product__details__quantity">
 							<div class="quantity">
 								<div class="pro-qty">
-									<input type="text" name="quantity" min="0" max="@Model.CompanionQuantityStock" value="0">
+									<input  type="hidden" name="quantity" min="0" max="@Model.CompanionQuantityStock" value="0">
 								</div>
 							</div>
 						</div>
@@ -263,21 +273,38 @@
 <script>
 	// Initialize the datepicker
 	$(document).ready(function () {
-		$('#datepicker').datepicker({
+		var companionSchedules = @Html.Raw(JsonConvert.SerializeObject(ViewBag.CompanionSchedules, new JsonSerializerSettings
+					  {
+						  ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+						  Formatting = Formatting.None // Optional: Include if you want formatted JSON
+					  }));
+
+		$('#datepicker, #datepicker2').datepicker({
 			format: 'dd/mm/yyyy',
 			startDate: 'today',
-			autoclose: true
-		});
-	});
-	$(document).ready(function () {
-		$('#datepicker2').datepicker({
-			format: 'dd/mm/yyyy',
-			startDate: 'today',
-			autoclose: true
+			autoclose: true,
+			beforeShowDay: function (date) {
+				var dateString = moment(date).format('YYYY-MM-DD');
+
+				// Check if the date is within any schedule range
+				var isDisabled = companionSchedules.some(function (schedule) {
+					return dateString >= schedule.StartDate.slice(0, 10) && dateString <= schedule.EndDate.slice(0, 10);
+					console.log(schedule.StartDate);
+					console.log(schedule.EndDate);
+				});
+				
+
+				// Return true if the date is not within any schedule range
+				return !isDisabled;
+			}
 		});
 	});
 
+
+
+
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 

@@ -12,9 +12,17 @@ namespace _Morafiq.Models
 		public Companion? Companion { get; set; }
 
 		[Required(ErrorMessage = "Schedule date is required")]
-		public DateTime ScheduleDate { get; set; }
+		public DateTime StartDate { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "Schedule date is required")]
+		public DateTime EndDate { get; set; }
+
+		[Required(ErrorMessage = "User id is required")]
+        public string UserId { get; set; }
+
+        public User? User { get; set; }
+
+        [Required]
 		public string Status { get; set; }
 	}
 }

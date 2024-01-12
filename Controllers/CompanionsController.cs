@@ -10,6 +10,7 @@ using _Morafiq.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using MailKit.Search;
 
 namespace _Morafiq.Controllers
 {
@@ -27,13 +28,23 @@ namespace _Morafiq.Controllers
 		public IActionResult Index()
         {
             var Id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = _context.Users.Where(user => user.Id == Id).SingleOrDefault();
+            var companion = _context.Companions.Where(c => c.UserId == Id).SingleOrDefault();
+            companion.User = _context.Users.Where(u => u.Id ==  Id).SingleOrDefault();
+            ViewBag.Orders = _context.OrderCompanion.Where(o => o.Companion.UserId == Id).ToList();
+			ViewBag.OrderCompanions = _context.OrderCompanion.Include(orderCompanion => orderCompanion.Companion).Include(orderCompanion => orderCompanion.Order).ThenInclude(order => order.User).Where(orderCompanion => orderCompanion.Companion.UserId == Id).ToList();
+           
+                
+                ViewBag.CompanionSchedule = _context.CompanionSchedule
+                .Where(c => c.Companion.UserId == Id)
+                .ToList();
+               
+            
             ViewBag.Services = _context.Services.ToList();
             ViewBag.Companions = _context.Companions.Include(product => product.Service).ToList();
-            ViewBag.Payments = _context.Payments.Include(payment => payment.Order).ThenInclude(order => order.User).ToList();
-            return View(user);
+            ViewBag.Payments = _context.Payments.Include(payment => payment.Order).ThenInclude(order => order.User).Where(p => p.Order.UserId == Id).ToList();
+            return View(companion);
         }
-
+        
         // GET: Companions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -154,7 +165,7 @@ namespace _Morafiq.Controllers
                 p.CompanionSale = Companion.CompanionSale;
                 p.CompanionDescription = Companion.CompanionDescription;
                 p.CompanionName = Companion.CompanionName;
-                p.CompanionQuantityStock = Companion.CompanionQuantityStock;
+                p.CompanionQuantityStock = 1;
                 p.ServiceId = Companion.ServiceId;
                 _context.Update(p);
                 await _context.SaveChangesAsync();
