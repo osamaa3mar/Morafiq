@@ -97,6 +97,16 @@
 								</div>
 							</div>
 						</div>
+						<!-- Date Picker Input -->
+						<div class="form-group">
+							<label for="datepicker">Select Date Range:</label>
+							<input type="text" class="form-control" id="datepicker" name="selectedStartDate" autocomplete="off">
+						</div>
+						<!-- Date Picker Input -->
+						<div class="form-group">
+							<label for="datepicker2">Select Date:</label>
+							<input type="text" class="form-control" id="datepicker2" name="selectedEndDate" autocomplete="off">
+						</div>
 						<button class="primary-btn">ADD TO CART</button>
 					</form>
 					<ul>
@@ -250,4 +260,24 @@
 		</div>
 	</div>
 </section>
+<script>
+	// Initialize the datepicker
+	$(document).ready(function () {
+		$('#datepicker').datepicker({
+			format: 'dd/mm/yyyy',
+			startDate: 'today',
+			autoclose: true
+		});
+	});
+	$(document).ready(function () {
+		$('#datepicker2').datepicker({
+			format: 'dd/mm/yyyy',
+			startDate: 'today',
+			autoclose: true
+		});
+	});
+
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 

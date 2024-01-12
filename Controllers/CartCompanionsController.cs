@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using _Morafiq.Data;
 using _Morafiq.Models;
 using System.Security.Claims;
+using SQLitePCL;
+using Microsoft.AspNetCore.Http;
 
 namespace _Morafiq.Controllers
 {
@@ -58,7 +60,7 @@ namespace _Morafiq.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create_(int id,int quantity)
+        public async Task<IActionResult> Create_(int id,int quantity,string selectedStartDate, string selectedEndDate)
         {
             //if (ModelState.IsValid)
             //{
@@ -70,7 +72,33 @@ namespace _Morafiq.Controllers
 				return RedirectToPage("/Account/Login", new { area = "Identity", returnUrl });
 				
             }
-            Companion Companion = _context.Companions.Where(Companion => Companion.CompanionId == id).SingleOrDefault();
+
+            //        new   work         //
+            if (DateTime.TryParse(selectedStartDate, out DateTime parsedStartDate) && 
+				DateTime.TryParse(selectedEndDate, out DateTime parsedEndDate))
+
+			{
+                for (DateTime currentDate = parsedStartDate; currentDate <= parsedEndDate; currentDate = currentDate.AddDays(1))
+                {
+                    CompanionSchedule newSchedule = new CompanionSchedule
+                    {
+                        CompanionId = id,
+                        ScheduleDate = currentDate,
+                        Status = "Pending"
+                    };
+					_context.CompanionSchedule.Add(newSchedule);
+				}
+                // Add the new schedule to the database
+                
+				
+				await _context.SaveChangesAsync();
+
+            }
+
+
+
+			//      end  new   work         //
+			Companion Companion = _context.Companions.Where(Companion => Companion.CompanionId == id).SingleOrDefault();
             Cart cart = _context.Carts.Where(cart => cart.UserId == userId).SingleOrDefault();
             CartCompanion cartCompanion_ = _context.CartCompanions.Where(cartP=>cartP.CartId == cart.CartId && cartP.CompanionId == id).SingleOrDefault();
             if(cartCompanion_ == null)

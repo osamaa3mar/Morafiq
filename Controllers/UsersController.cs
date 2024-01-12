@@ -57,7 +57,7 @@ namespace _Morafiq.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(User User, string Password, string ConfirmPassword, IFormFile FormFile)
+        public async Task<IActionResult> Create(User User, string Role, string Password, string ConfirmPassword, IFormFile FormFile)
         {
 
             //if (ModelState.IsValid)
@@ -74,12 +74,12 @@ namespace _Morafiq.Controllers
             User.NormalizedEmail = User.Email.ToUpper();
             User.NormalizedUserName = User.Email.ToUpper();
             User.UserName = User.Email;
-            //User.Role = "User";
+            User.Role = Role;
 
             var result = await _userManager.CreateAsync(User, Password);
 
             var Id = User.Id;
-            var roleId = (User.Role == "User") ? "2" : "3";
+            var roleId = (Role == "Companion") ? "3" : "2";
             var userRole = new IdentityUserRole<string>
             {
                 UserId = Id,
@@ -87,6 +87,13 @@ namespace _Morafiq.Controllers
             };
             _context.UserRoles.Add(userRole);
             _context.SaveChanges();
+            if (Role == "Companion")
+            {
+                Companion companion = new Companion();
+                companion.
+            }
+
+
             Cart cart = new Cart();
             cart.UserId=User.Id;
             cart.TotalQuantity = 0;
