@@ -161,7 +161,7 @@ namespace _Morafiq.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("UserCart");
         }
-        public async Task<IActionResult> CheckoutAsync(decimal TotalPrice)
+        public async Task<IActionResult> Checkout(decimal TotalPrice)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Cart cart = _context.Carts.Include(cartP => cartP.User).Where(cart => cart.UserId == userId).SingleOrDefault();
@@ -239,8 +239,8 @@ namespace _Morafiq.Controllers
             bodyBuilder.TextBody = $"Dear {user.FirstName} {user.LastName},\n\n"
                              + "Thank you for choosing us!\n"
                              + $"Your order (Order ID: {order.OrderId}) has been successfully placed.\n"
-                             + $"Order Total: {order.TotalPrice-3} JD\n"
-                             + "The shipping cost is 3 JD.\n\n"
+                             + $"Order Total: {order.TotalPrice} JD\n"
+                             + $"Companion will reach you soon\n"
                              + "We appreciate your business and look forward to serving you again!\n\n"
                              + "Best regards,\n"
                              + "Morafiq Team";
@@ -250,8 +250,8 @@ namespace _Morafiq.Controllers
             using (var smtp = new MailKit.Net.Smtp.SmtpClient())
             {
                 smtp.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
-                smtp.Connect("smtp.gmail.com", 587, false);
-                smtp.Authenticate("info.morafiq@gmail.com", "Aa12345@");
+				smtp.Connect("smtp.gmail.com", 587, false);
+                smtp.Authenticate("info.morafiq@gmail.com", "tvup zspi qqxm akxb\r\n");
                 await smtp.SendAsync(email);
                 smtp.Disconnect(true);
             }

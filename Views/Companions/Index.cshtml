@@ -79,8 +79,9 @@
 										<tr>
 											<th>Customer Name</th>
 											<th>Customer Email</th>
+											<th>Phone Number</th>
 											<th>Date</th>
-											<th>Status</th>
+											@* <th>Status</th> *@
 										</tr>
 									</thead>
 									<tbody>
@@ -92,9 +93,10 @@
 											{
 												<td>@companionSchedule.User.FirstName @companionSchedule.User.LastName</td>
 												<td>@companionSchedule.User.Email</td>
+												<td>@companionSchedule.User.PhoneNumber</td>
 												<td>@companionSchedule.StartDate.ToString("dd-MM-yyyy") -- @companionSchedule.EndDate.ToString("dd-MM-yyyy")</td>
 
-												<td>
+												@* <td>
 													<select asp-for="@companionSchedule.Status" onchange="confirmUpdateStatus('@companionSchedule.ScheduleId', this.value, '@companionSchedule.Status')">
 														@if (companionSchedule.Status == "Pending")
 														{
@@ -115,7 +117,7 @@
 															<option value="Reject" selected>Reject</option>
 														}
 													</select>
-												</td>
+												</td> *@
 
 											}
 
@@ -133,7 +135,7 @@
 		</div>
 		<div class="col-md-12 col-lg-4">
 			<div class="row">
-				<div class="col-md-12 col-lg-12">
+				@* <div class="col-md-12 col-lg-12">
 					<div class="card" data-aos="fade-up" data-aos-delay="600">
 						<div class="flex-wrap card-header d-flex justify-content-between">
 							<div class="header-title">
@@ -163,7 +165,7 @@
 
 						</div>
 					</div>
-				</div>
+				</div> *@
 			</div>
 		</div>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

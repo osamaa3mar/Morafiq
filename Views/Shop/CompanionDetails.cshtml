@@ -122,31 +122,7 @@
 
 
 					</ul>
-					<form asp-controller="CartCompanions"
-						  asp-action="Create_" asp-route-id="@Model.CompanionId">
-						<div style="display:none;" class="product__details__quantity">
-							<div class="quantity">
-								<div class="pro-qty">
-									<input type="hidden" name="quantity" min="0" max="@Model.CompanionQuantityStock" value="0">
-								</div>
-							</div>
-						</div>
-						<!-- Date Picker Input -->
-						<div class="form-group">
-							<label for="datepicker">Select Start Date:</label>
-							<input type="text" class="form-control" id="datepicker" name="selectedStartDate" autocomplete="off">
-							<span class="text-danger" id="selectedStartDateError"></span>
-						</div>
-
-						<!-- Date Picker Input -->
-						<div class="form-group">
-							<label for="datepicker2">Select End Date:</label>
-							<input type="text" class="form-control" id="datepicker2" name="selectedEndDate" autocomplete="off">
-							<span class="text-danger" id="selectedEndDateError"></span>
-						</div>
-
-						<button class="primary-btn" id="addToCartBtn">ADD TO CART</button>
-					</form>
+					
 				</div>
 			</div>
 			<div class="col-lg-12">
@@ -161,6 +137,10 @@
 								Reviews
 								<span>@ViewBag.Reviews.Count</span>
 							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
+							   aria-selected="false">Order</a>
 						</li>
 					</ul>
 					<div class="tab-content">
@@ -253,6 +233,49 @@
 								</div>
 							</div>
 						</div>
+						<div class="tab-pane" id="tabs-2" role="tabpanel">
+							<div class="product__details__tab__desc">
+								<div class="tab-pane active" id="tab2" role="tabpanel" aria-labelledby="review-tab">
+									<div class="row">
+										<div class="col-lg-6">
+
+											
+										</div>
+
+										<div class="col-lg-6">
+											<div class="review_box">
+												<h4>Add an Order</h4>
+												<form asp-controller="CartCompanions"
+													  asp-action="Create_" asp-route-id="@Model.CompanionId">
+													<div style="display:none;" class="product__details__quantity">
+														<div class="quantity">
+															<div class="pro-qty">
+																<input type="hidden" name="quantity" min="0" max="@Model.CompanionQuantityStock" value="0">
+															</div>
+														</div>
+													</div>
+													<!-- Date Picker Input -->
+													<div class="form-group">
+														<label for="datepicker">Select Start Date:</label>
+														<input type="text" class="form-control" id="datepicker" name="selectedStartDate" autocomplete="off">
+														<span class="text-danger" id="selectedStartDateError"></span>
+													</div>
+
+													<!-- Date Picker Input -->
+													<div class="form-group">
+														<label for="datepicker2">Select End Date:</label>
+														<input type="text" class="form-control" id="datepicker2" name="selectedEndDate" autocomplete="off">
+														<span class="text-danger" id="selectedEndDateError"></span>
+													</div>
+
+													<button class="primary-btn" id="addToCartBtn">ADD TO CART</button>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -330,7 +353,7 @@
 				var currentDate = new Date();
 				var selectedDate = new Date(dateString);
 
-				if (selectedDate <= currentDate) {
+				if (selectedDate < currentDate) {
 					return false; // Date is in the past
 				}
 
