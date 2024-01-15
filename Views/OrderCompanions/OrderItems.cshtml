@@ -54,7 +54,6 @@
                             <thead>
                                 <tr>
                                     <th>Companion</th>
-                                    <th>Quantity</th>
                                     <th>Companion Price</th>
                                     <th>Total Price</th>
                                 </tr>
@@ -64,7 +63,6 @@
                                 {
                                     <tr>
                                         <td>@orderCompanion.Companion.CompanionName</td>
-                                        <td>@orderCompanion.CompanionQuantity</td>
                                         <td>@orderCompanion.Companion.CompanionPrice JD</td>
                                         @{
                                             var TotalItemPrice = orderCompanion.CompanionQuantity * orderCompanion.Companion.CompanionPrice;
@@ -76,7 +74,6 @@
                             <tfoot>
                                 <tr>
                                     <th>Companion</th>
-                                    <th>Quantity</th>
                                     <th>Companion Price</th>
                                     <th>Total Price</th>
                                 </tr>

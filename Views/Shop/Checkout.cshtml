@@ -1,6 +1,15 @@
 ﻿<link rel="stylesheet" href="~/css/Checkout.css" type="text/css">
  @model User
 
+@{
+    TimeSpan TotalPeriod = new TimeSpan();
+    foreach (var item in ((List<CartCompanion>)ViewBag.CartCompanions))
+    {
+        TimeSpan Period = new TimeSpan();
+        Period = item.EndDate - item.StartDate;
+        TotalPeriod += Period;
+    }
+}
 <link rel="stylesheet" href="~/css/CartStyle.css" type="text/css">
  <style>
      input{
@@ -52,23 +61,24 @@
         <div class="col-md-4 summary">
             <div><h5><b>Summary</b></h5></div>
             <hr>
-            <div class="row">
-                <div class="col" style="padding-left:0;">All Items</div>
+            @* <div class="row">
+                <div class="col" style="padding-left:0;">All Orders</div>
                 <div class="col text-right"> @ViewBag.Cart.TotalPrice JD</div>
-            </div>
+            </div> *@
             <form asp-controller="Shop"
                   asp-action="Proceed" method="post">
                 <div class="row">
-                    <div class="col" style="padding-left:0;">SHIPPING </div>
-                    <div class="col text-right"> 3.00 JD</div>
+                    <div class="col" style="padding-left:0;">Total Period </div>
+                    <div class="col text-right">@TotalPeriod.Days Days</div>
                 </div>
 
                 <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                     <div class="col">TOTAL PRICE</div>
                     @{
-                        var total = ViewBag.Cart.TotalPrice + 3;
+                        var total = ViewBag.Cart.TotalPrice;
                     }
                     <div class="col text-right">@total JD</div>
+
                 </div>
                 <button class="btn">PROCEED</button>
             </form>

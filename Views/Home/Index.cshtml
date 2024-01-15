@@ -144,7 +144,7 @@
 <!-- Latest Companion Section Begin -->
 <section class="latest-product spad" style="padding-top: 0px;">
 	<div class="section-title">
-		<h2>Sale</h2>
+		<h2>Top Reviewed Companions</h2>
 	</div>
 	<div class="container">
 		<div class="row">
@@ -156,64 +156,42 @@
 				c++;
 				<div class="col-lg-4 col-md-6">
 					<div class="latest-product__text">
-						<h4>@Service.ServiceName Sales</h4>
+						<h4>@Service.ServiceName</h4>
 						<div class="latest-product__slider owl-carousel">
-							@for (int i = 1; i < 3; i++)
-							{
+
+							
+
+								@foreach (var Companion in Service.Companions.ToList())
+								{
 								<div class="latest-prdouct__slider__item">
-									@if (i == 1)
+									@foreach (var review in ((List<Review>)ViewBag.Reviews).Where(r => r.ReviewRate >= 4))
 									{
-										@foreach (var Companion in Service.Companions.Where(p => p.CompanionSale >
-															0).Take(3).ToList())
+										@if (review.CompanionId == Companion.CompanionId)
 										{
+
 											string imageBase64 = Convert.ToBase64String(Companion.Image);
 											<a asp-controller="Shop" asp-action="CompanionDetails" asp-route-id="@Companion.CompanionId"
-											   class="latest-Companion__item">
-												<div class="latest-Companion__item__pic">
+											   class="latest-product__item">
+												<div class="latest-product__item__pic">
 													<img src="data:image;base64,@imageBase64">
 												</div>
-												<div class="latest-Companion__item__text">
+												<div class="latest-product__item__text">
 													<h6>@Companion.CompanionName</h6>
-													@{
-														decimal price = @Companion.CompanionPrice - (@Companion.CompanionPrice *
-														@Companion.CompanionSale / 100);
-													}
-													<span>
-														@price JD<br />
-														<del style="color:gray; font-weight:300">@Companion.CompanionPrice JD</del>
+
+													<span style="color:gold;">
+														(@review.ReviewRate) of 5 starz
 													</span>
 												</div>
 											</a>
-										}
-									}
-									else
-									{
-										@foreach (var Companion in Service.Companions.Where(p => p.CompanionSale >
-															0).Skip(3).ToList())
-										{
-											string imageBase64 = Convert.ToBase64String(Companion.Image);
-											<a asp-controller="Shop" asp-action="CompanionDetails" asp-route-id="@Companion.CompanionId"
-											   class="latest-Companion__item">
-												<div class="latest-Companion__item__pic">
-													<img src="data:image;base64,@imageBase64">
-												</div>
-												<div class="latest-Companion__item__text">
-													<h6>@Companion.CompanionName</h6>
-													@{
-														decimal price = @Companion.CompanionPrice - (@Companion.CompanionPrice /
-														@Companion.CompanionSale);
-														price = Math.Round(price, 2);
-													}
-													<span>
-														@price JD<br />
-														<del style="color:gray; font-weight:300">@Companion.CompanionPrice JD</del>
-													</span>
-												</div>
-											</a>
+											break;
 										}
 									}
 								</div>
-							}
+								}
+
+
+							
+
 						</div>
 					</div>
 				</div>

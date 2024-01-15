@@ -10,7 +10,7 @@
 		Period += Schedule.EndDate - Schedule.StartDate;
 
 	}
-	
+
 }
 <style>
 	.rate {
@@ -74,6 +74,7 @@
 						} *@
 					</div>
 				</div>
+				
 			</div>
 			<div class="col-lg-6 col-md-6">
 				<div class="product__details__text">
@@ -98,31 +99,54 @@
 					</div>
 					<div class="product__details__price">@Model.CompanionPrice JD</div>
 					<p>@Model.CompanionDescription</p>
+					
+					<ul>
+						@if (((List<CompanionSchedule>)ViewBag.CompanionSchedules).Count > 0)
+						{
+							<li>
+								<b style="color:darkred">Not Available in :</b><br />
+								@{
+									foreach (var Schedule in ((List<CompanionSchedule>)ViewBag.CompanionSchedules))
+									{
+										if (Schedule.EndDate > DateTime.Now)
+										{
+											<span>
+												From @Schedule.StartDate.ToString("yyyy-MM-dd") to @Schedule.EndDate.ToString("yyyy-MM-dd") ,<br />
+											</span>
+										}
+
+									}
+								}
+							</li>
+						}
+
+
+					</ul>
 					<form asp-controller="CartCompanions"
 						  asp-action="Create_" asp-route-id="@Model.CompanionId">
 						<div style="display:none;" class="product__details__quantity">
 							<div class="quantity">
 								<div class="pro-qty">
-									<input  type="hidden" name="quantity" min="0" max="@Model.CompanionQuantityStock" value="0">
+									<input type="hidden" name="quantity" min="0" max="@Model.CompanionQuantityStock" value="0">
 								</div>
 							</div>
 						</div>
 						<!-- Date Picker Input -->
 						<div class="form-group">
-							<label for="datepicker">Select Date Range:</label>
+							<label for="datepicker">Select Start Date:</label>
 							<input type="text" class="form-control" id="datepicker" name="selectedStartDate" autocomplete="off">
+							<span class="text-danger" id="selectedStartDateError"></span>
 						</div>
+
 						<!-- Date Picker Input -->
 						<div class="form-group">
-							<label for="datepicker2">Select Date:</label>
+							<label for="datepicker2">Select End Date:</label>
 							<input type="text" class="form-control" id="datepicker2" name="selectedEndDate" autocomplete="off">
+							<span class="text-danger" id="selectedEndDateError"></span>
 						</div>
-						<button class="primary-btn">ADD TO CART</button>
-					</form>
-					<ul>
-						<li><b>Availability</b> <span>@(Model.CompanionQuantityStock > 0 ? "In Stock" : "Out of Stock")</span></li>
 
-					</ul>
+						<button class="primary-btn" id="addToCartBtn">ADD TO CART</button>
+					</form>
 				</div>
 			</div>
 			<div class="col-lg-12">
@@ -273,30 +297,17 @@
 <script>
 	// Initialize the datepicker
 	$(document).ready(function () {
-		var companionSchedules = @Html.Raw(JsonConvert.SerializeObject(ViewBag.CompanionSchedules, new JsonSerializerSettings
-					  {
-						  ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-						  Formatting = Formatting.None // Optional: Include if you want formatted JSON
-					  }));
-
-		$('#datepicker, #datepicker2').datepicker({
+		$('#datepicker').datepicker({
 			format: 'dd/mm/yyyy',
-			startDate: 'today',
-			autoclose: true,
-			beforeShowDay: function (date) {
-				var dateString = moment(date).format('YYYY-MM-DD');
-
-				// Check if the date is within any schedule range
-				var isDisabled = companionSchedules.some(function (schedule) {
-					return dateString >= schedule.StartDate.slice(0, 10) && dateString <= schedule.EndDate.slice(0, 10);
-					console.log(schedule.StartDate);
-					console.log(schedule.EndDate);
-				});
-				
-
-				// Return true if the date is not within any schedule range
-				return !isDisabled;
-			}
+			startDate: '0',
+			autoclose: true
+		});
+	});
+	$(document).ready(function () {
+		$('#datepicker2').datepicker({
+			format: 'dd/mm/yyyy',
+			startDate: '0',
+			autoclose: true
 		});
 	});
 
@@ -304,6 +315,64 @@
 
 
 </script>
+<script>
+	$(document).ready(function () {
+		$("#addToCartBtn").click(function () {
+			// Get the values from the form inputs
+			var startDate = $("#datepicker").val();
+			var endDate = $("#datepicker2").val();
+
+			// Perform client-side validation
+			var isValid = true;
+
+			// Function to validate the date format and check if it's in the future
+			function isValidDate(dateString) {
+				var currentDate = new Date();
+				var selectedDate = new Date(dateString);
+
+				if (selectedDate <= currentDate) {
+					return false; // Date is in the past
+				}
+
+				var regex = /^\d{2}\/\d{2}\/\d{4}$/;
+				return dateString.match(regex);
+			}
+
+			// Validate start date
+			if (!isValidDate(startDate)) {
+				$("#selectedStartDateError").text("Please enter a valid future start date.");
+				isValid = false;
+			} else {
+				$("#selectedStartDateError").text("");
+			}
+
+			// Validate end date
+			if (!isValidDate(endDate)) {
+				$("#selectedEndDateError").text("Please enter a valid future end date.");
+				isValid = false;
+			} else {
+				$("#selectedEndDateError").text("");
+			}
+
+			// Validate date range
+			var start = new Date(startDate);
+			var end = new Date(endDate);
+			if (start > end) {
+				$("#selectedEndDateError").text("End date must be greater than or equal to start date.");
+				isValid = false;
+			} else {
+				$("#selectedEndDateError").text("");
+			}
+
+			if (!isValid) {
+				// Prevent form submission if validation fails
+				return false;
+			}
+		});
+	});
+</script>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>

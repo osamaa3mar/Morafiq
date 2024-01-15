@@ -30,6 +30,7 @@ namespace _Morafiq.Controllers
            
 			ViewBag.Companions = _context.Companions.Include(Companion => Companion.Service).ToList();
             ViewBag.Services = _context.Services.Include(Service => Service.Companions).ToList();
+            ViewBag.Reviews = _context.Reviews.ToList();
             ViewBag.SelectedService = selectedService;
             ViewBag.CompanionImages = _context.CompanionImages.ToList();
             ViewBag.Testimonials = _context.Testimonials.Include(testimonial => testimonial.User).Where(testimonial => testimonial.TestimonialStatus == "Accept").Take(3).ToList();

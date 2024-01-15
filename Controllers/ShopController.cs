@@ -40,6 +40,7 @@ namespace _Morafiq.Controllers
 
             ViewBag.Companions = _context.Companions.Include(review => review.Reviews).ToList();
             ViewBag.Services = _context.Services.ToList();
+            ViewBag.Reviews = _context.Reviews.ToList();
             ViewBag.SelectedService = selectedService;
             //ViewBag.CompanionImages = _context.CompanionImages.ToList();
             if (id == null || _context.Services == null)
@@ -160,10 +161,16 @@ namespace _Morafiq.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("UserCart");
         }
-        public IActionResult Checkout()
+        public async Task<IActionResult> CheckoutAsync(decimal TotalPrice)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            ViewBag.Cart = _context.Carts.Include(cartP => cartP.User).Where(cart => cart.UserId == userId).SingleOrDefault();
+            Cart cart = _context.Carts.Include(cartP => cartP.User).Where(cart => cart.UserId == userId).SingleOrDefault();
+            cart.TotalPrice = TotalPrice;
+			_context.Update(cart);
+			await _context.SaveChangesAsync();
+
+			ViewBag.Cart = cart;
+            ViewBag.CartCompanions = _context.CartCompanions.Where(cartP => cartP.CartId == cart.CartId).ToList();
             ViewBag.Visa = _context.Visa.Where(visa => visa.UserId == userId).SingleOrDefault();
             User user = _context.Users.Where(user=>user.Id == userId).SingleOrDefault();
             return View(user);
@@ -173,8 +180,9 @@ namespace _Morafiq.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Cart cart = _context.Carts.Where(cart => cart.UserId == userId).SingleOrDefault();
             List<CartCompanion> cartCompanions = _context.CartCompanions.Where(cartP => cartP.CartId == cart.CartId).ToList();
+
             Order order = new Order();
-            order.TotalPrice = cart.TotalPrice + 3; 
+            order.TotalPrice = cart.TotalPrice; 
             order.UserId = userId;
             order.Status = "Pending";
             order.OrderRate = 0;

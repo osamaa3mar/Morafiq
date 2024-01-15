@@ -22,66 +22,9 @@
 				</div>
 			</div>
 			<div class="col-lg-9 col-md-7">
-				<div class="product__discount">
-					<div class="section-title product__discount__title">
-						<h2>Sale Off</h2>
-					</div>
-					<div class="row">
-						<div class="product__discount__slider owl-carousel">
-							@foreach (var item in ViewBag.Companions)
-							{
-								@if (item.CompanionSale > 0)
-								{
-									<div class="col-lg-4">
-										<a asp-action="CompanionDetails"
-										   asp-route-id="@item.CompanionId">
-											<div class="product__discount__item">
-												<div class="product__discount__item__pic set-bg"
-													 data-setbg="img/product/discount/pd-1.jpg">
-													@{
-														string imageBase64 = Convert.ToBase64String(item.Image);
-													}
-
-													<img src="data:image;base64,@imageBase64">
-													@{
-														int sale = (int)item.CompanionSale;
-													}
-													<div class="product__discount__percent">@sale%</div>
-												</div>
-												<div class="product__discount__item__text">
-													<a asp-action="CompanionDetails"
-													   asp-route-id="@item.CompanionId">
-														<span>@item.Service.ServiceName</span>
-														<h5>
-															@item.CompanionName
-														</h5>
-														@{
-															var priceAfterDiscount = item.CompanionPrice - (item.CompanionPrice *
-															item.CompanionSale / 100);
-														}
-														<div class="product__item__price">
-															@priceAfterDiscount JD
-															<span> @item.CompanionPrice JD</span>
-														</div>
-													</a>
-												</div>
-											</div>
-										</a>
-									</div>
-								}
-
-							}
-						</div>
-					</div>
-				</div>
 				<div class="filter__item">
 					<div class="row">
 						<div class="col-lg-4 col-md-5">
-							<div class="filter__sort">
-								<span>Service</span>
-								<select id="ServiceFilter">
-								</select>
-							</div>
 						</div>
 						<div class="col-lg-4 col-md-4">
 							<div class="filter__found">
@@ -96,10 +39,6 @@
 							</div>
 						</div>
 						<div class="col-lg-4 col-md-3">
-							<div class="filter__option">
-								<span class="icon_grid-2x2"></span>
-								<span class="icon_ul"></span>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -164,6 +103,59 @@
 						}
 					}
 				</div>
+				@* <div class="product__discount">
+					<div class="section-title product__discount__title">
+						<h2>Sale Off</h2>
+					</div>
+					<div class="row">
+						<div class="product__discount__slider owl-carousel">
+							@foreach (var item in ViewBag.Companions)
+							{
+								@if (item.CompanionSale > 0)
+								{
+									<div class="col-lg-4">
+										<a asp-action="CompanionDetails"
+										   asp-route-id="@item.CompanionId">
+											<div class="product__discount__item">
+												<div class="product__discount__item__pic set-bg"
+													 data-setbg="img/product/discount/pd-1.jpg">
+													@{
+														string imageBase64 = Convert.ToBase64String(item.Image);
+													}
+
+													<img src="data:image;base64,@imageBase64">
+													@{
+														int sale = (int)item.CompanionSale;
+													}
+													<div class="product__discount__percent">@sale%</div>
+												</div>
+												<div class="product__discount__item__text">
+													<a asp-action="CompanionDetails"
+													   asp-route-id="@item.CompanionId">
+														<span>@item.Service.ServiceName</span>
+														<h5>
+															@item.CompanionName
+														</h5>
+														@{
+															var priceAfterDiscount = item.CompanionPrice - (item.CompanionPrice *
+															item.CompanionSale / 100);
+														}
+														<div class="product__item__price">
+															@priceAfterDiscount JD
+															<span> @item.CompanionPrice JD</span>
+														</div>
+													</a>
+												</div>
+											</div>
+										</a>
+									</div>
+								}
+
+							}
+						</div>
+					</div>
+				</div> *@
+
 			</div>
 		</div>
 	</div>

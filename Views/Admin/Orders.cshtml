@@ -45,8 +45,6 @@
                             <tr>
                                 <th>User Name</th>
                                 <th>Total Price</th>
-                                <th>Status</th>
-                                <th>Details</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,7 +53,7 @@
                                 <tr>
                                     <td>@order.User.FirstName @order.User.LastName</td>
                                     <td>@order.TotalPrice JD</td>
-                                    <td>
+                                    @* <td>
                                         <select asp-for="@order.Status" onchange="confirmUpdateStatus('@order.OrderId', this.value, '@order.Status')">
                                             @if (order.Status == "Pending")
                                             {
@@ -76,8 +74,7 @@
                                                 <option value="Reject" selected>Reject</option>
                                             }
                                         </select>
-                                    </td>
-                                    <td><a href="/OrderProducts/OrderItems?orderId=@order.OrderId" class="btn btn-info mb-2">Details</a></td>
+                                    </td> *@
                                 </tr>
                             }
                         </tbody>
@@ -85,9 +82,8 @@
                             <tr>
                                 <th>User Name</th>
                                 <th>Total Price</th>
-                                <th>Status</th>
-                                <th>Details</th>
-                            </tr>
+@*                                 <th>Status</th>
+ *@                            </tr>
                         </tfoot>
                     </table>
                 </div>

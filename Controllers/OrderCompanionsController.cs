@@ -171,6 +171,7 @@ namespace _Morafiq.Controllers
             var Id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var user = _context.Users.Where(user => user.Id == Id).SingleOrDefault();
             ViewBag.OrderCompanions = _context.OrderCompanion.Include(orderCompanion => orderCompanion.Companion).Include(orderCompanion => orderCompanion.Order).ThenInclude(order => order.User).Where(orderCompanion => orderCompanion.OrderId == orderId).ToList();
+
             ViewBag.TotalPrice = _context.Orders.Where(order => order.OrderId == orderId).SingleOrDefault().TotalPrice;
             return View(user);
 

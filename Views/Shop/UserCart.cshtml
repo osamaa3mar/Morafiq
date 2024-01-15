@@ -1,76 +1,99 @@
-﻿<link rel="stylesheet" href="~/css/CartStyle.css" type="text/css">
+﻿@{
+	TimeSpan TotalPeriod = new TimeSpan();
+	decimal TotalPrice = 0;
+}
+<link rel="stylesheet" href="~/css/CartStyle.css" type="text/css">
 
 <div class="card">
-    <div class="row">
-        <div class="col-md-8 cart">
-            <div class="title">
-                <div class="row">
-                    <div class="col"><h4><b>Shopping Cart</b></h4></div>
-                    <div class="col align-self-center text-right text-muted">@ViewBag.Cart.TotalQuantity</div>
-                </div>
-            </div>
-            @foreach(var companion in (List<CartCompanion>)(ViewBag.CartCompanions)){
-                <div class="row border-top border-bottom">
-                    <div class="row main align-items-center">
-                        <div class="col-2">
-                            @{
-                                string imageBase64 = Convert.ToBase64String(companion.Companion.Image);
-                            }
-                            <img src="data:image;base64,@imageBase64" class="img-fluid" >
-                        </div>
-                        <div class="col">
-                            <div class="row text-muted">@companion.Companion.Service.ServiceName</div>
-                            <div class="row">@companion.Companion.CompanionName</div>
-                        </div>
-                        <div class="col">
-                            <a href="/Shop/RemoveOneItemFromCompanion?CompanionId=@companion.CompanionId&CartId=@companion.CartId&">-</a>
-                            <a href="#" class="border">
-                               @*  @companion.CompanionQuantity *@
-                               Deleted stuff here
-                            </a>
-                            <a href="/Shop/AddOneItemToCompanion?CompanionId=@companion.CompanionId&CartId=@companion.CartId">+</a>
-                        </div>
-                        @if (@companion.Companion.CompanionSale > 0)
-                        {
-                            decimal price_ = @companion.Companion.CompanionPrice - (@companion.Companion.CompanionPrice /
-                            @companion.Companion.CompanionSale);
-                            price_ = Math.Round(price_, 2);
+	<div class="row">
+		<div class="col-md-8 cart">
+			<div class="title">
+				<div class="row">
+					<div class="col"><h4><b>Shopping Cart</b></h4></div>
+					<div class="col align-self-center text-right text-muted">@ViewBag.Cart.TotalQuantity</div>
+				</div>
+			</div>
+			
+			@foreach (var companion in (List<CartCompanion>)(ViewBag.CartCompanions))
+			{
 
-                            <div class="col">@price_ JD<span class="close"><a href="/Shop/RemoveCompanionFromCart?CompanionId=@companion.CompanionId&CartId=@companion.CartId">&#10005;</a></span></div>
-                        }
-                        else
-                        {
-                            <div class="col">@companion.Companion.CompanionPrice JD<span class="close"><a href="/Shop/RemoveCompanionFromCart?CompanionId=@companion.CompanionId&CartId=@companion.CartId">&#10005;</a></span></div>
-                        }
-                    </div>
-                </div>
-            }
+				TimeSpan Period = new TimeSpan();
+
+				Period = companion.EndDate - companion.StartDate;
+				TotalPeriod += Period;
+
+				<div class="row border-top border-bottom">
+					<div class="row main align-items-center">
+						<div class="col-2">
+							@{
+								string imageBase64 = Convert.ToBase64String(companion.Companion.Image);
+							}
+							<img src="data:image;base64,@imageBase64" class="img-fluid">
+						</div>
+						<div class="col">
+							<div class="row text-muted">@companion.Companion.Service.ServiceName</div>
+							<div class="row">@companion.Companion.CompanionName</div>
+						</div>
+						<div class="col">
+							@* <a href="/Shop/RemoveOneItemFromCompanion?CompanionId=@companion.CompanionId&CartId=@companion.CartId&">-</a> *@
+							<a href="#" class="border">
+								@companion.StartDate.ToString("yyyy-MM-dd")
+							</a>
+							-
+							<a href="#" class="border">
+								@companion.EndDate.ToString("yyyy-MM-dd")
+
+							</a>
+							@* <a href="/Shop/AddOneItemToCompanion?CompanionId=@companion.CompanionId&CartId=@companion.CartId">+</a> *@
+						</div>
+						@{
+							decimal price_ = 0;
+						}
+						
+						@if (@companion.Companion.CompanionSale > 0)
+						{
+							price_ = @companion.Companion.CompanionPrice - (@companion.Companion.CompanionPrice /
+							@companion.Companion.CompanionSale);
+							price_ = Math.Round(price_, 2);
+							price_ *= Period.Days;
+							TotalPrice += price_;
+							<div class="col">@price_ JD<span class="close"><a href="/Shop/RemoveCompanionFromCart?CompanionId=@companion.CompanionId&CartId=@companion.CartId">&#10005;</a></span></div>
+						}
+						else
+						{
+							price_ = companion.Companion.CompanionPrice * Period.Days;
+							TotalPrice += price_;
+							<div class="col">@price_ JD<span class="close"><a href="/Shop/RemoveCompanionFromCart?CompanionId=@companion.CompanionId&CartId=@companion.CartId">&#10005;</a></span></div>
+						}
+					</div>
+				</div>
+			}
 			<div class="back-to-shop"><a href="/Shop/Index">&leftarrow;<span class="text-muted">Back to shop</span></a></div>
-        </div>
-        <div class="col-md-4 summary">
-            <div><h5><b>Summary</b></h5></div>
-            <hr>
-            <div class="row">
-                <div class="col" style="padding-left:0;">All Items</div>
-                <div class="col text-right"> @ViewBag.Cart.TotalPrice JD</div>
-            </div>
-            <form asp-controller="Shop"
-                  asp-action="Checkout" method="post">
-                <div class="row">
-                    <div class="col" style="padding-left:0;">SHIPPING </div>
-                    <div class="col text-right"> 3.00 JD</div>
-                </div>
-            
-                <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                    <div class="col">TOTAL PRICE</div>
-                    @{
-                        var total = ViewBag.Cart.TotalPrice + 3;
-                    }
-                    <div class="col text-right">@total JD</div>
-                </div>
+		</div>
+		<div class="col-md-4 summary">
+			<div><h5><b>Summary</b></h5></div>
+			<hr>
+			@* <div class="row">
+				<div class="col" style="padding-left:0;">All Orders</div>
+				<div class="col text-right"> @ViewBag.Cart.TotalPrice JD</div>
+			</div> *@
+			<form asp-controller="Shop"
+				  asp-action="Checkout" method="post">
+				<div class="row">
+					<div class="col" style="padding-left:0;">Total Period </div>
+					<div class="col text-right">@TotalPeriod.Days Days</div>
+				</div>
+
+				<div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+					<div class="col">TOTAL PRICE</div>
+					
+					<div class="col text-right">@TotalPrice JD</div>
+					<input type="hidden" name="TotalPrice" value="@TotalPrice">
+
+				</div>
 				<button class="btn">CHECKOUT</button>
 			</form>
-        </div>
-    </div>
+		</div>
+	</div>
 
 </div>

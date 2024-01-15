@@ -173,7 +173,7 @@
 							</div>
 						</div>
 						<div class="card-body">
-							@foreach (var payment in ((List<Payment>)(ViewBag.Payments)).Take(4))
+							@foreach (var payment in ((List<Payment>)(ViewBag.Payments)).TakeLast(4))
 							{
 								<div class="mb-2 d-flex profile-media align-items-top">
 									<div class="mt-1 profile-dots-pills border-primary"></div>

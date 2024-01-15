@@ -72,13 +72,14 @@ namespace _Morafiq.Controllers
 				return RedirectToPage("/Account/Login", new { area = "Identity", returnUrl });
 
 			}
-
+			TimeSpan Period = new TimeSpan();
+			
 			//        new   work         //
 			if (DateTime.TryParse(selectedStartDate, out DateTime parsedStartDate) &&
 				DateTime.TryParse(selectedEndDate, out DateTime parsedEndDate))
 
 			{
-
+				Period = parsedEndDate - parsedStartDate;
 				CompanionSchedule newSchedule = new CompanionSchedule
 				{
 					CompanionId = id,
@@ -91,14 +92,7 @@ namespace _Morafiq.Controllers
 				_context.CompanionSchedule.Add(newSchedule);
 
 				// Add the new schedule to the database
-
-
 				await _context.SaveChangesAsync();
-
-
-
-
-
 				//      end  new   work         //
 				Companion Companion = _context.Companions.Where(Companion => Companion.CompanionId == id).SingleOrDefault();
 				Cart cart = _context.Carts.Where(cart => cart.UserId == userId).SingleOrDefault();
@@ -112,6 +106,7 @@ namespace _Morafiq.Controllers
 					cartCompanion.CartId = cart.CartId;
 					_context.Add(cartCompanion);
 					await _context.SaveChangesAsync();
+					
 					if (Companion.CompanionSale > 0)
 					{
 						cart.TotalPrice = @Companion.CompanionPrice - (@Companion.CompanionPrice * @Companion.CompanionSale / 100);
@@ -120,6 +115,7 @@ namespace _Morafiq.Controllers
 					{
 						cart.TotalPrice = Companion.CompanionPrice;
 					}
+					cart.TotalPrice *= Period.Days;
 					cart.TotalQuantity++;
 					_context.Update(cart);
 					await _context.SaveChangesAsync();
@@ -138,6 +134,8 @@ namespace _Morafiq.Controllers
 					{
 						cart.TotalPrice +=  Companion.CompanionPrice;
 					}
+					cart.TotalPrice *= Period.Days;
+
 					_context.Update(cart);
 					await _context.SaveChangesAsync();
 				}

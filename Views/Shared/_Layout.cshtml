@@ -152,21 +152,26 @@
 			<a href="/Home/Index"><img src="~/assets/img/logo.png" alt=""></a>
 		</div>
 		@if (signInManager.IsSignedIn(User) && userRow["Role"].ToString().ToUpper() ==
-										"USER")
-					{
-		<div class="humberger__menu__cart">
-			<ul>
-				<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-				<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>@cartRow["TotalQuantity"]</span></a></li>
-			</ul>
-			<div class="header__cart__price">
-				item: <span>
-					@cartRow["TotalPrice"]
-					JD
-				</span>
+				"USER")
+		{
+			<div class="header__cart">
+				<ul>
+					<li>
+						<a href="/Shop/UserCart">
+							<i class="fa fa-shopping-bag"></i>
+							<span>@cartRow["TotalQuantity"]</span>
+						</a>
+					</li>
+				</ul>
+				<div class="header__cart__price">
+					total: <span>
+						@cartRow["TotalPrice"]
+						JD
+					</span>
+				</div>
 			</div>
-		</div>
-					}
+		}
+		
 		<div class="humberger__menu__widget">
 			@if (signInManager.IsSignedIn(User))
 			{
@@ -178,14 +183,14 @@
 				</div>
 				<div class="header__top__right__auth">
 					<a class="nav-link text-dark" asp-action="Profile" asp-controller="Users">
-						<i class="fa fa-solid fa-user"></i> Profile
+						<i class="fa fa-solid fa-user"></i> @userRow["FirstName"]
 					</a>
 				</div>
-				<div class="header__top__right__auth">
-					<a class="nav-link text-dark" asp-action="Index" asp-controller="Orders">
-						<i class="fa fa-solid fa-list"></i> Orders
-					</a>
-				</div>
+				// <div class="header__top__right__auth">
+				// 	<a class="nav-link text-dark" asp-action="Index" asp-controller="Orders">
+				// 		<i class="fa fa-solid fa-list"></i> Orders
+				// 	</a>
+				// </div>
 			}
 			else
 			{
@@ -210,7 +215,7 @@
 		</nav>
 		<div id="mobile-menu-wrap"></div>
 		<div class="header__top__right__social">
-			<a href="https://github.com/yousefweb/5Dot"><i class="fa-brands fa-github"></i></a>
+			<a href="https://github.com/osamaa3mar/Morafiq"><i class="fa-brands fa-github"></i></a>
 
 		</div>
 		<div class="humberger__menu__contact">
@@ -221,7 +226,6 @@
 						<p><i class="fa fa-envelope"></i> @userRow["Email"]</p>
 					</li>
 				}
-				<li class=" text-danger p-2 rounded">Explore excellence in every device.</li>
 			</ul>
 		</div>
 	</div>
@@ -241,22 +245,21 @@
 										<p><i class="fa fa-envelope"></i> @userRow["Email"]</p>
 									</li>
 								}
-								<li class="text-danger p-2 rounded">
-									Explore excellence in every
-									device.
-								</li>
+								
 							</ul>
 						</div>
 					</div>
 					<div class="col-lg-6 col-md-6">
 						<div class="header__top__right">
 							<div class="header__top__right__social">
-								@if (!string.IsNullOrWhiteSpace(User.Identity.Name))
+								@if (signInManager.IsSignedIn(User) && userRow["Role"].ToString().ToUpper() ==
+																		"ADMIN")
 								{
-									<span style="font-weight: bold; text-align: left; color:forestgreen">
-										Welcome
-										@userRow["FirstName"] @userRow["LastName"]
-									</span>
+									<div class="header__top__right__auth">
+										<a class="nav-link text-dark" asp-action="Index" asp-controller="Admin">
+											<i class="fa fa-solid fa-chart-line"></i> Dashboard
+										</a>
+									</div>
 								}
 
 							</div>
@@ -271,14 +274,14 @@
 								</div>
 								<div class="header__top__right__auth">
 									<a class="nav-link text-dark" asp-action="Profile" asp-controller="Users">
-										<i class="fa fa-solid fa-user"></i> Profile
+										<i class="fa fa-solid fa-user"></i> @userRow["FirstName"]
 									</a>
 								</div>
-								<div class="header__top__right__auth">
-									<a class="nav-link text-dark" asp-action="Index" asp-controller="Orders">
-										<i class="fa fa-solid fa-list"></i> Orders
-									</a>
-								</div>
+								// <div class="header__top__right__auth">
+								// 	<a class="nav-link text-dark" asp-action="Index" asp-controller="Orders">
+								// 		<i class="fa fa-solid fa-list"></i> Orders
+								// 	</a>
+								// </div>
 							}
 							else
 							{
@@ -338,20 +341,7 @@
 							</div>
 						</div>
 					}
-					else
-					{
-						<div class="header__cart">
-							<ul>
-								<li><a><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
-							</ul>
-							<div class="header__cart__price">
-								total: <span>
-									0
-									JD
-								</span>
-							</div>
-						</div>
-					}
+					
 				</div>
 			</div>
 			<div class="humberger__open">
