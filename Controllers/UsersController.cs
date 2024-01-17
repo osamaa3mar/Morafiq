@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 
 namespace _Morafiq.Controllers
 {
@@ -61,7 +62,6 @@ namespace _Morafiq.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(User User, string Role,string CompanionDescription,int CompanionPrice,int ServiceId, string Password, string ConfirmPassword, IFormFile FormFile)
         {
-
             //if (ModelState.IsValid)
             //{
             using (var stream = FormFile.OpenReadStream())
@@ -87,14 +87,25 @@ namespace _Morafiq.Controllers
                 UserId = Id,
                 RoleId = roleId
             };
-            _context.UserRoles.Add(userRole);
-            _context.SaveChanges();
+            if (Role != "Companion")
+            {
+                _context.UserRoles.Add(userRole);
+                _context.SaveChanges();
+                Cart cart = new Cart();
+                cart.UserId = User.Id;
+                cart.TotalQuantity = 0;
+                cart.TotalPrice = 0;
+                _context.Carts.Add(cart);
+                _context.SaveChanges();
+            }
+            
             if (Role == "Companion")
             {
                 Companion companion = new Companion();
                 companion.CompanionName = User.FirstName + " " + User.LastName;
                 companion.CompanionDescription = CompanionDescription;
                 companion.CompanionPrice = CompanionPrice;
+                companion.CompanionStatus = "Pending";
                 companion.ServiceId = ServiceId;
                 companion.UserId = User.Id;
                 using (var stream = FormFile.OpenReadStream())
@@ -105,24 +116,16 @@ namespace _Morafiq.Controllers
                 }
                 companion.ImageName = FormFile.FileName;
                 companion.contentType = FormFile.ContentType;
-                _context.Add(companion);
-
-                _context.SaveChanges();
-
-                
+                //if (companion.CompanionStatus == "Accept")
+                //{
+                    _context.UserRoles.Add(userRole);
+                    _context.SaveChanges();
+                    _context.Add(companion);
+                    _context.SaveChanges();
+                await SendAccountStatusEmail(companion);
+                //} 
             }
-
-
-            Cart cart = new Cart();
-            cart.UserId=User.Id;
-            cart.TotalQuantity = 0;
-            cart.TotalPrice = 0;
-            _context.Carts.Add(cart);
-            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", User.Id);
-            //return View(User);
         }
 
         // GET: Users/Edit/5
@@ -335,5 +338,34 @@ namespace _Morafiq.Controllers
 
         #endregion
 
+
+        public async Task SendAccountStatusEmail(Companion companion)
+        {
+
+
+            var email = new MimeMessage();
+            email.From.Add(new MailboxAddress("morafiq", "info.morafiq@gmail.com"));
+            email.To.Add(new MailboxAddress($"{companion.User.FirstName} {companion.User.LastName}", companion.User.Email));
+            email.Subject = "Account Status";
+
+            var bodyBuilder = new BodyBuilder();
+            bodyBuilder.TextBody = $"Dear {companion.User.FirstName} {companion.User.LastName},\n\n"
+                             + "Thank you for choosing us!\n"
+                             + $"Your Account is Currently {companion.CompanionStatus}.\n"
+                             + "We appreciate your business and look forward to help!\n\n"
+                             + "Best regards,\n"
+                             + "Morafiq Team";
+
+            email.Body = bodyBuilder.ToMessageBody();
+
+            using (var smtp = new MailKit.Net.Smtp.SmtpClient())
+            {
+                smtp.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
+                smtp.Connect("smtp.gmail.com", 587, false);
+                smtp.Authenticate("info.morafiq@gmail.com", "tvup zspi qqxm akxb\r\n");
+                await smtp.SendAsync(email);
+                smtp.Disconnect(true);
+            }
+        }
     }
 }

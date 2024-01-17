@@ -174,6 +174,7 @@ namespace _Morafiq.Controllers
 		{
 			var CompanionSchedule = await _context.CompanionSchedule.FindAsync(ScheduleId);
 			CompanionSchedule.Status = newStatus;
+			
 			_context.Update(CompanionSchedule);
 			await _context.SaveChangesAsync();
 			return RedirectToAction("Index", "Companions");

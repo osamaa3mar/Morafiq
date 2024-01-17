@@ -27,7 +27,7 @@ namespace _Morafiq.Controllers
         {
 
             
-            ViewBag.Companions = _context.Companions.Include(review => review.Reviews).ToList();
+            ViewBag.Companions = _context.Companions.Include(review => review.Reviews).Where(c => c.CompanionStatus == "Accept").ToList();
             ViewBag.Services = _context.Services.ToList();
             ViewBag.SelectedService = selectedService;
             //ViewBag.CompanionImages = _context.CompanionImages.ToList();
@@ -38,7 +38,7 @@ namespace _Morafiq.Controllers
         public async Task<IActionResult> Service(int? id, string selectedService)
         {
 
-            ViewBag.Companions = _context.Companions.Include(review => review.Reviews).ToList();
+            ViewBag.Companions = _context.Companions.Include(review => review.Reviews).Where(c => c.CompanionStatus == "Accept").ToList();
             ViewBag.Services = _context.Services.ToList();
             ViewBag.Reviews = _context.Reviews.ToList();
             ViewBag.SelectedService = selectedService;
@@ -60,7 +60,7 @@ namespace _Morafiq.Controllers
         public async Task<IActionResult> CompanionDetails(int? id)
         {
 
-            ViewBag.Companions = _context.Companions.ToList();
+            ViewBag.Companions = _context.Companions.Where(c => c.CompanionStatus == "Accept").ToList();
             ViewBag.Services = _context.Services.ToList();
             ViewBag.Reviews = _context.Reviews.Include(review => review.Companion).Include(review => review.User).Where(review => review.CompanionId == id && review.ReviewStatus == "Accept").ToList();
             //ViewBag.CompanionImages = _context.CompanionImages

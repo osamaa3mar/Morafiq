@@ -1,0 +1,124 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .row {
+        --bs-gutter-x: 0rem;
+    }
+</style>
+<div class="iq-navbar-header" style="height: 215px;">
+    <div class="container-fluid iq-container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="flex-wrap d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1>Hello @Model.FirstName!</h1>
+                        <p>Welcome, Admin! We appreciate your contributions to our mission.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="iq-header-img">
+        <img src="~/Admin_assets/images/dashboard/top-header.png" alt="header" class="theme-color-default-img img-fluid w-100 h-100 animated-scaleX">
+        <img src="~/Admin_assets/images/dashboard/top-header1.png" alt="header" class="theme-color-purple-img img-fluid w-100 h-100 animated-scaleX">
+        <img src="~/Admin_assets/images/dashboard/top-header2.png" alt="header" class="theme-color-blue-img img-fluid w-100 h-100 animated-scaleX">
+        <img src="~/Admin_assets/images/dashboard/top-header3.png" alt="header" class="theme-color-green-img img-fluid w-100 h-100 animated-scaleX">
+        <img src="~/Admin_assets/images/dashboard/top-header4.png" alt="header" class="theme-color-yellow-img img-fluid w-100 h-100 animated-scaleX">
+        <img src="~/Admin_assets/images/dashboard/top-header5.png" alt="header" class="theme-color-pink-img img-fluid w-100 h-100 animated-scaleX">
+    </div>
+</div>          <!-- Nav Header Component End -->
+<!--Nav End-->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Testimonials List</h4>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table id="datatable" class="table table-striped" data-toggle="data-table">
+                        <thead>
+                            <tr>
+                                <th>Companion Name</th>
+                                <th>Companion Email</th>
+                                <th>Companion Price</th>
+                                <th>Companion Description</th>
+                                <th>Service</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var Companion in (List<Companion>)(ViewBag.Companions))
+                            {
+                                <tr>
+                                    <td>@Companion.User.FirstName @Companion.User.LastName</td>
+                                    <td>@Companion.User.Email</td>
+                                    <td>@Companion.CompanionPrice</td>
+                                    <td>@Companion.CompanionDescription</td>
+                                    <td>@Companion.Service.ServiceName</td>
+                                    
+                                    <td>
+                                        <select asp-for="@Companion.CompanionStatus" onchange="confirmUpdateStatus('@Companion.CompanionId', this.value, '@Companion.CompanionStatus')">
+                                            @if (@Companion.CompanionStatus == "Pending")
+                                            {
+                                                <option value="Pending" selected>Pending</option>
+                                                <option value="Accept">Accept</option>
+                                                <option value="Reject">Reject</option>
+                                            }
+                                            else if (@Companion.CompanionStatus == "Accept")
+                                            {
+                                                <option value="Pending">Pending</option>
+                                                <option value="Accept" selected>Accept</option>
+                                                <option value="Reject">Reject</option>
+                                            }
+                                            else if (@Companion.CompanionStatus == "Reject")
+                                            {
+                                                <option value="Pending">Pending</option>
+                                                <option value="Accept">Accept</option>
+                                                <option value="Reject" selected>Reject</option>
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Companion Name</th>
+                                <th>Companion Email</th>
+                                <th>Companion Price</th>
+                                <th>Companion Description</th>
+                                <th>Service</th>
+                                <th>Status</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmUpdateStatus(CompanionId, newStatus, currentStatus) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you really want to change the Companion status?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `/Companions/EditCompanionStatus?CompanionId=${CompanionId}&newStatus=${newStatus}`;
+            } else {
+                document.querySelector(`[value="${currentStatus}"]`).selected = true;
+            }
+        });
+    }
+</script>

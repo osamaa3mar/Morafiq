@@ -45,7 +45,8 @@ namespace _Morafiq.Models
         public byte[] Image { get; set; }
         public List<Review>? Reviews { get; set; }
 
+		public string CompanionStatus { get; set; }
 
-        //public List<Order> Orders { get; set; }
-    }
+		//public List<Order> Orders { get; set; }
+	}
 }

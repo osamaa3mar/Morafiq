@@ -67,7 +67,14 @@ namespace _Morafiq.Controllers
 		{
 			var Id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 			var user = _context.Users.Where(user => user.Id == Id).SingleOrDefault();
-			ViewBag.Companions = _context.Companions.Include(product => product.Service).Where(product => product.ServiceId == ServiceId).ToList();
+			ViewBag.Companions = _context.Companions.Include(product => product.Service).Where(c => c.ServiceId == ServiceId && c.CompanionStatus == "Accept").ToList();
+            return View(user);
+        }
+        public IActionResult CompanionsList()
+        {
+            var Id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = _context.Users.Where(user => user.Id == Id).SingleOrDefault();
+            ViewBag.Companions = _context.Companions.Include(companion => companion.Service).Include(companion => companion.User).ToList();
             return View(user);
         }
     }
