@@ -20,9 +20,14 @@ namespace _Morafiq.Controllers
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? userId)
         {
-            var applicationDbContext = _context.Orders.Include(o => o.User);
+            //ViewBag.Orders = _context.Orders.Where(o => o.UserId == userId);
+            if (userId == null)
+            {
+                return View();
+            }
+            var applicationDbContext = _context.Orders.Include(o => o.User).Where(o => o.UserId == userId);
             return View(await applicationDbContext.ToListAsync());
         }
 

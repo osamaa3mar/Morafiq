@@ -180,7 +180,8 @@ namespace _Morafiq.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Cart cart = _context.Carts.Where(cart => cart.UserId == userId).SingleOrDefault();
             List<CartCompanion> cartCompanions = _context.CartCompanions.Where(cartP => cartP.CartId == cart.CartId).ToList();
-
+            
+		
             Order order = new Order();
             order.TotalPrice = cart.TotalPrice; 
             order.UserId = userId;
@@ -199,20 +200,37 @@ namespace _Morafiq.Controllers
                 _context.Remove(cartCompanion);
                 await _context.SaveChangesAsync();
             }
-            Payment payment = new Payment();
-            payment.OrderId = order.OrderId;
-            payment.Amount = order.TotalPrice;
-            payment.TransactionDate = DateTime.Now;
-            _context.Add(payment);
-            await _context.SaveChangesAsync();
-            cart.TotalPrice = 0;
-            cart.TotalQuantity= 0;
-            _context.Update(cart);
-            await _context.SaveChangesAsync();
-            await SendOrderConfirmationEmail(order);
-            return RedirectToAction("Index","Home");
+			cart.TotalPrice = 0;
+			cart.TotalQuantity = 0;
+			_context.Update(cart);
+			await _context.SaveChangesAsync();
+
+			return RedirectToAction("Index","Home");
         }
-        public IActionResult AddVisa()
+		public async Task<IActionResult> PayAfterApproveFromCompanion(int orderId)
+        {
+			var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			Order order1 = _context.Orders.Where(o => o.OrderId == orderId).SingleOrDefault();
+			if (order1 != null)
+			{
+				if (order1.Status == "Accept")
+				{
+					Payment payment = new Payment();
+					payment.OrderId = order1.OrderId;
+					payment.Amount = order1.TotalPrice;
+					payment.TransactionDate = DateTime.Now;
+					_context.Add(payment);
+					await _context.SaveChangesAsync();
+
+					await SendOrderConfirmationEmail(order1);
+
+					return RedirectToAction("Index", "Home");
+				}
+			}
+			return RedirectToAction("Index", "Home");
+		}
+
+		public IActionResult AddVisa()
         {
             return View();
         }

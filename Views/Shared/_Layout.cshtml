@@ -186,11 +186,11 @@
 						<i class="fa fa-solid fa-user"></i> @userRow["FirstName"]
 					</a>
 				</div>
-				// <div class="header__top__right__auth">
-				// 	<a class="nav-link text-dark" asp-action="Index" asp-controller="Orders">
-				// 		<i class="fa fa-solid fa-list"></i> Orders
-				// 	</a>
-				// </div>
+				<div class="header__top__right__auth">
+					<a class="nav-link text-dark" asp-action="Index" asp-controller="Orders" asp-route-userId="@userId">
+						<i class="fa fa-solid fa-list"></i> Orders
+					</a>
+				</div>
 			}
 			else
 			{
@@ -283,11 +283,11 @@
 										<i class="fa fa-solid fa-user"></i> @userRow["FirstName"]
 									</a>
 								</div>
-								// <div class="header__top__right__auth">
-								// 	<a class="nav-link text-dark" asp-action="Index" asp-controller="Orders">
-								// 		<i class="fa fa-solid fa-list"></i> Orders
-								// 	</a>
-								// </div>
+								<div class="header__top__right__auth">
+									<a class="nav-link text-dark" asp-action="Index" asp-controller="Orders" asp-route-userId="@userId">
+										<i class="fa fa-solid fa-list"></i> Orders
+									</a>
+								</div>
 							}
 							else
 							{
