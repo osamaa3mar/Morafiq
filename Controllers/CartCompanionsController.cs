@@ -60,7 +60,7 @@ namespace _Morafiq.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create_(int id, int quantity, string selectedStartDate, string selectedEndDate)
+		public async Task<IActionResult> Create_(int id, int quantity, string selectedStartDate, string selectedEndDate ,string description)
 		{
 			//if (ModelState.IsValid)
 			//{
@@ -86,6 +86,7 @@ namespace _Morafiq.Controllers
 					UserId = userId,
 					StartDate = parsedStartDate,
 					EndDate = parsedEndDate,
+					description = description,
 
 					Status = "Pending"
 				};

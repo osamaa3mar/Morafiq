@@ -43,6 +43,8 @@ namespace _Morafiq.Controllers
 		}
         public IActionResult AboutUs()
         {
+            ViewBag.Testimonials = _context.Testimonials.Include(testimonial => testimonial.User).Where(testimonial => testimonial.TestimonialStatus == "Accept").Take(3).ToList();
+
             return View();
         }
 

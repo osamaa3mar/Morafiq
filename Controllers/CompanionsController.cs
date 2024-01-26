@@ -28,6 +28,7 @@ namespace _Morafiq.Controllers
         [Authorize(Roles = "COMPANION")]
         public  IActionResult Index()
         {
+
             var Id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var companion = _context.Companions.Where(c => c.UserId == Id).SingleOrDefault();
             companion.User = _context.Users.Where(u => u.Id == Id).SingleOrDefault();
@@ -218,15 +219,17 @@ namespace _Morafiq.Controllers
         // POST: Companions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int Id)
         {
             if (_context.Companions == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Companions'  is null.");
             }
-            var Companion = await _context.Companions.FindAsync(id);
+            var Companion = await _context.Companions.FindAsync(Id);
             if (Companion != null)
             {
+                _context.CompanionSchedule.Where(c => c.CompanionId == Id);
+                _context.CompanionSchedule.Where(c => c.CompanionId == Id);
                 _context.Companions.Remove(Companion);
             }
 

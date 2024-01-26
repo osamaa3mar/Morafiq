@@ -181,6 +181,10 @@ namespace WebApplication3.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ScheduleId");
 
                     b.HasIndex("CompanionId");
@@ -197,6 +201,9 @@ namespace WebApplication3.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"), 1L, 1);
+
+                    b.Property<bool>("IsPayed")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("OrderRate")
                         .HasColumnType("decimal(18,2)");

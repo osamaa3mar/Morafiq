@@ -9,9 +9,9 @@
 		<div class="col-md-8 cart">
 			<div class="title">
 				<div class="row">
-					<div class="col"><h4><b>Shopping Cart</b></h4></div>
-					<div class="col align-self-center text-right text-muted">@ViewBag.Cart.TotalQuantity</div>
-				</div>
+					<div class="col"><h4><b>Order Info</b></h4></div>
+@* 					<div class="col align-self-center text-right text-muted">@ViewBag.Cart.TotalQuantity</div>
+ *@				</div>
 			</div>
 			
 			@foreach (var companion in (List<CartCompanion>)(ViewBag.CartCompanions))
@@ -68,7 +68,7 @@
 					</div>
 				</div>
 			}
-			<div class="back-to-shop"><a href="/Shop/Index">&leftarrow;<span class="text-muted">Back to shop</span></a></div>
+			<div class="back-to-shop"><a href="/Shop/Index">&leftarrow;<span class="text-muted">Back to Companions List</span></a></div>
 		</div>
 		<div class="col-md-4 summary">
 			<div><h5><b>Summary</b></h5></div>

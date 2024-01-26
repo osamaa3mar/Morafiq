@@ -18,5 +18,6 @@ namespace _Morafiq.Models
         [Required(ErrorMessage = "Quantity is required")]
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be greater than 0")]
         public int CompanionQuantity { get; set; }
+
     }
 }

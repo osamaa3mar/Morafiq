@@ -158,8 +158,8 @@
 				<ul>
 					<li>
 						<a href="/Shop/UserCart">
-							<i class="fa fa-shopping-bag"></i>
-							<span>@cartRow["TotalQuantity"]</span>
+							<i class="fa fa-handshake-o"></i>
+							 <span>*</span>
 						</a>
 					</li>
 				</ul>
@@ -208,7 +208,7 @@
 		</div>
 		<nav class="humberger__menu__nav mobile-menu">
 			<ul>
-				<li class="@(IsCurrentPage("Home", "Index") ? "active" : "")">
+				<li class="@(IsCurrentPage("Home", "Index")? "active" : "") @(IsCurrentPage("Home", "AboutUs")? "active" : "")">
 					<a href="/Home/Index">Home</a>
 				</li>
 				<li class="@(IsCurrentPage("Shop", "Index") ? "active" : "")">
@@ -267,6 +267,15 @@
 										</a>
 									</div>
 								}
+								@if (signInManager.IsSignedIn(User) && userRow["Role"].ToString().ToUpper() ==
+																"COMPANION")
+								{
+									<div class="header__top__right__auth">
+										<a class="nav-link text-dark" asp-action="Index" asp-controller="Companions">
+											<i class="fa fa-solid fa-chart-line"></i> Dashboard
+										</a>
+									</div>
+								}
 
 							</div>
 
@@ -320,7 +329,7 @@
 				<div class="col-lg-6">
 					<nav class="header__menu" style="display: flex;justify-content: center;">
 						<ul>
-							<li class="@(IsCurrentPage("Home", "Index") ? "active" : "")">
+							<li class="@(IsCurrentPage("Home", "Index") ? "active" : "") @(IsCurrentPage("Home", "AboutUs")? "active" : "")">
 								<a href="/Home/Index">Home</a>
 							</li>
 							<li class="@(IsCurrentPage("Shop", "Index") ? "active" : "")">
@@ -340,8 +349,8 @@
 							<ul>
 								<li>
 									<a href="/Shop/UserCart">
-										<i class="fa fa-shopping-bag"></i>
-										<span>@cartRow["TotalQuantity"]</span>
+										<i class="fa fa-handshake-o"></i>
+										 <span>*</span>
 									</a>
 								</li>
 							</ul>
@@ -365,7 +374,7 @@
 	<div>
 		@RenderBody()
 	</div>
-	<footer class="footer spad" style="padding-top:0px">
+	<footer class="footer spad mt-5" style="padding-top:0px">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -380,39 +389,13 @@
 							</p>
 						</div>
 						<div class="footer__copyright__payment">
-							@if (signInManager.IsSignedIn(User))
-							{
-								<a @* href="/Testimonials/Create" *@class="btn bg-primary" style="color:white;margin-right: 20px;">Leave Feedback</a>
-							}
-							<img src="~/assets/img/payment-item.png" alt="">
+							
+							<img src="~/assets/img/logo.jpg" alt="">
 						</div>
 					</div>
 				</div>
 			</div>
-		</div><div class="overlay"></div>
-		<div class="container mt-5">
-			<!-- Popup Form -->
-			<!-- Popup Form -->
-			<div class="popup-form">
-				<button type="button" class="close close-btn" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-
-				<form asp-controller="Testimonials" asp-action="Create">
-					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-					<div class="form-group">
-						<label for="TestimonialMessage" class="control-label">Feedback Message:</label>
-						<!-- Use a textarea instead of an input field -->
-						<textarea name="TestimonialMessage" class="form-control" rows="4"></textarea>
-						<span for="TestimonialMessage" class="text-danger"></span>
-					</div>
-					<div class="form-group">
-						<input type="submit" value="Create" class="btn btn-primary" />
-						<button type="button" class="btn btn-secondary">Cancel</button>
-					</div>
-				</form>
-			</div>
-		</div>
+		
 	</footer>
 	<!-- Footer Section End -->
 	<!-- Js Plugins -->
@@ -424,19 +407,7 @@
 	<script src="~/assets/js/mixitup.min.js"></script>
 	<script src="~/assets/js/owl.carousel.min.js"></script>
 	<script src="~/assets/js/main.js"></script>
-	<script>
-		$(document).ready(function () {
-			$(".btn.bg-primary").click(function () {
-				$(".overlay").show();
-				$(".popup-form").show();
-			});
-
-			$(".overlay, .close-btn, .btn-secondary").click(function () {
-				$(".overlay").hide();
-				$(".popup-form").hide();
-			});
-		});
-	</script>
+	
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
 

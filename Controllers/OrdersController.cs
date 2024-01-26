@@ -164,7 +164,7 @@ namespace _Morafiq.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        public async Task<IActionResult> EditOrderStatus(int orderId,string newStatus)
+        public async Task<IActionResult> EditOrderStatusAdmin(int orderId,string newStatus)
         {
             var order = await _context.Orders.FindAsync(orderId);
             order.Status = newStatus;
@@ -176,5 +176,14 @@ namespace _Morafiq.Controllers
         {
           return (_context.Orders?.Any(e => e.OrderId == id)).GetValueOrDefault();
         }
-    }
+		public async Task<IActionResult> EditOrderStatus(string UserId,string newStatus)
+        {
+			var Order = await _context.Orders.Where(o => o.UserId == UserId && o.IsPayed == false).SingleOrDefaultAsync();
+			Order.Status = newStatus;
+       
+			_context.Update(Order);
+			await _context.SaveChangesAsync();
+			return RedirectToAction("Index", "Companions");
+		}
+	}
 }

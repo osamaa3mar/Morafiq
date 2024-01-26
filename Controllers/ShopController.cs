@@ -79,7 +79,7 @@ namespace _Morafiq.Controllers
                 return NotFound();
             }
 			ViewBag.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            ViewBag.CompanionSchedules = _context.CompanionSchedule.Where(s => s.CompanionId == id).ToList();
+            ViewBag.CompanionSchedules = _context.CompanionSchedule.Where(s => s.CompanionId == id && s.Status=="Accept").ToList();
             return View(Companion);
         }
         public IActionResult UserCart()
@@ -195,22 +195,25 @@ namespace _Morafiq.Controllers
                 orderCompanion.CompanionId = cartCompanion.CompanionId;
                 orderCompanion.OrderId= order.OrderId;
                 orderCompanion.CompanionQuantity = 1;
+                orderCompanion.Companion =  _context.Companions.Include(c=>c.User).Where(c => c.CompanionId == cartCompanion.CompanionId).SingleOrDefault();
                 _context.Add(orderCompanion);
                 await _context.SaveChangesAsync();
                 _context.Remove(cartCompanion);
                 await _context.SaveChangesAsync();
-            }
+				await SendOrderNoticeEmailToCompanion(orderCompanion);
+
+			}
 			cart.TotalPrice = 0;
 			cart.TotalQuantity = 0;
 			_context.Update(cart);
 			await _context.SaveChangesAsync();
-
+            
 			return RedirectToAction("Index","Home");
         }
 		public async Task<IActionResult> PayAfterApproveFromCompanion(int orderId)
         {
 			var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-			Order order1 = _context.Orders.Where(o => o.OrderId == orderId).SingleOrDefault();
+			Order order1 = _context.Orders.Where(o => o.OrderId == orderId && o.IsPayed == false).FirstOrDefault();
 			if (order1 != null)
 			{
 				if (order1.Status == "Accept")
@@ -220,11 +223,14 @@ namespace _Morafiq.Controllers
 					payment.Amount = order1.TotalPrice;
 					payment.TransactionDate = DateTime.Now;
 					_context.Add(payment);
+                    order1.IsPayed = true;
+                    _context.Update(order1);
 					await _context.SaveChangesAsync();
 
 					await SendOrderConfirmationEmail(order1);
+                    
 
-					return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Orders", new { userId });
 				}
 			}
 			return RedirectToAction("Index", "Home");
@@ -274,6 +280,36 @@ namespace _Morafiq.Controllers
                 smtp.Disconnect(true);
             }
         }
+		public async Task SendOrderNoticeEmailToCompanion(OrderCompanion order)
+		{
+			string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			User user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            
+			var email = new MimeMessage();
+			email.From.Add(new MailboxAddress("morafiq", "info.morafiq@gmail.com"));
+			email.To.Add(new MailboxAddress($"{order.Companion.User.FirstName} {order.Companion.User.LastName}", order.Companion.User.Email));
+			email.Subject = "New Order";
 
-    }
+			var bodyBuilder = new BodyBuilder();
+			bodyBuilder.TextBody = $"Dear {order.Companion.User.FirstName} {order.Companion.User.LastName},\n\n"
+							 + $"A new order (Order ID: {order.OrderId}) has been placed to you.\n"
+							 + $"Name: {user.FirstName} {user.LastName}\n"
+							 + $"Email: {user.Email}\n"
+							 + $"Please Contact {user.FirstName} for more details and visit the website to approve\n"
+							 + "We appreciate your business and look forward to serving you again!\n\n"
+							 + "Best regards,\n"
+							 + "Morafiq Team";
+
+			email.Body = bodyBuilder.ToMessageBody();
+
+			using (var smtp = new MailKit.Net.Smtp.SmtpClient())
+			{
+				smtp.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
+				smtp.Connect("smtp.gmail.com", 587, false);
+				smtp.Authenticate("info.morafiq@gmail.com", "tvup zspi qqxm akxb\r\n");
+				await smtp.SendAsync(email);
+				smtp.Disconnect(true);
+			}
+		}
+	}
 }

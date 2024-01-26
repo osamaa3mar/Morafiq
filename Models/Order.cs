@@ -16,5 +16,6 @@ namespace _Morafiq.Models
         public decimal TotalPrice { get; set; }
         [Required]
         public string Status { get; set; }
+        public bool IsPayed { get; set; }
     }
 }

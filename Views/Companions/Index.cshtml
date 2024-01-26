@@ -57,7 +57,7 @@
 
 			</div>
 		</div>
-		<div class="col-md-12 col-lg-8">
+		<div class="col-md-12 col-lg-12">
 			<div class="row">
 				<div class="col-md-12 col-lg-12">
 					<div class="overflow-hidden card" data-aos="fade-up" data-aos-delay="600">
@@ -75,29 +75,32 @@
 						<div class="p-0 card-body">
 							<div class="mt-4 table-responsive">
 								<table id="basic-table" class="table mb-0 table-striped" role="grid">
+									@foreach (var companionSchedule in ((List<CompanionSchedule>)ViewBag.CompanionSchedule))
+											{
 									<thead>
+
 										<tr>
+											
 											<th>Customer Name</th>
 											<th>Customer Email</th>
 											<th>PhoneNumber</th>
+											<th>Description</th>
 											<th>Date</th>
 											<th>Status</th>
 										</tr>
 									</thead>
 									<tbody>
-										@{
-
-										}
+									
 										<tr>
-											@foreach (var companionSchedule in ((List<CompanionSchedule>)ViewBag.CompanionSchedule))
-											{
+											
 												<td>@companionSchedule.User.FirstName @companionSchedule.User.LastName</td>
 												<td>@companionSchedule.User.Email</td>
 												<td>@companionSchedule.User.PhoneNumber</td>
+												<td>@companionSchedule.description</td>
 												<td>@companionSchedule.StartDate.ToString("dd-MM-yyyy") -- @companionSchedule.EndDate.ToString("dd-MM-yyyy")</td>
 
 												<td>
-													<select asp-for="@companionSchedule.Status" onchange="confirmUpdateStatus('@companionSchedule.ScheduleId', this.value, '@companionSchedule.Status')">
+													<select asp-for="@companionSchedule.Status" onchange="confirmUpdateStatus('@companionSchedule.ScheduleId','@companionSchedule.User.Id', this.value, '@companionSchedule.Status')">
 														@if (companionSchedule.Status == "Pending")
 														{
 															<option value="Pending" selected>Pending</option>
@@ -119,10 +122,11 @@
 													</select>
 												</td>
 
-											}
+											
 										</tr>
 
 									</tbody>
+									}
 								</table>
 							</div>
 						</div>
@@ -167,7 +171,7 @@
 		</div>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script>
-			function confirmUpdateStatus(ScheduleId, newStatus, currentStatus) {
+			function confirmUpdateStatus(ScheduleId,Id, newStatus, currentStatus) {
 				Swal.fire({
 					title: 'Are you sure?',
 					text: 'Do you really want to change the status?',
@@ -179,6 +183,7 @@
 				}).then((result) => {
 					if (result.isConfirmed) {
 						window.location.href = `/CompanionSchedules/EditCompanionScheduleStatus?ScheduleId=${ScheduleId}&newStatus=${newStatus}`;
+						window.location.href = `/Orders/EditOrderStatus?UserId=${Id}&newStatus=${newStatus}`;
 					} else {
 						document.querySelector(`[value="${currentStatus}"]`).selected = true;
 					}

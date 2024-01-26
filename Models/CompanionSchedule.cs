@@ -17,6 +17,8 @@ namespace _Morafiq.Models
 		[Required(ErrorMessage = "Schedule date is required")]
 		public DateTime EndDate { get; set; }
 
+		public string description { get; set; }
+
 		[Required(ErrorMessage = "User id is required")]
         public string UserId { get; set; }
 
@@ -24,5 +26,6 @@ namespace _Morafiq.Models
 
         [Required]
 		public string Status { get; set; }
+
 	}
 }

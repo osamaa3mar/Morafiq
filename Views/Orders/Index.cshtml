@@ -17,7 +17,10 @@
                     Total Price
                 </th>
                 <th>
-                    Status
+                    Companion Status
+                </th>
+                <th>
+                    Payed
                 </th>
                 <th>
                     Actions
@@ -48,10 +51,61 @@
                         @Html.DisplayFor(modelItem => item.Status)
                     </td>
                     <td>
-                        <a href="/Shop/PayAfterApproveFromCompanion?orderId=@item.OrderId" class="btn btn-info mb-2">Pay</a>
+                        @if (item.IsPayed)
+                        {
+                            <span class="text-success">Payed</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Not Payed</span>
+                        }
+                    </td>
+                    <td>
+                        @if (!item.IsPayed && item.Status=="Accept")
+                        {
+                            <a href="/Shop/PayAfterApproveFromCompanion?orderId=@item.OrderId" class="btn btn-info mb-2 pay-btn">Pay Now</a>
+                        }
+
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+    <div class="mt-100"></div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var payBtn = document.querySelector('.pay-btn');
+
+        if (payBtn) {
+            payBtn.addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent the default link behavior
+
+                // Use SweetAlert to show a confirmation
+                Swal.fire({
+                    title: 'Confirm Payment',
+                    text: 'Are you sure you want to proceed with the payment?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, pay now!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Show payment success message
+                        Swal.fire({
+                            title: 'Payment Success',
+                            text: 'Your payment was successful!',
+                            icon: 'success'
+                        }).then(() => {
+                            // Redirect to the payment action
+                            window.location.href = payBtn.href;
+                        });
+                    }
+                });
+            });
+        }
+    });
+
+    });</script>

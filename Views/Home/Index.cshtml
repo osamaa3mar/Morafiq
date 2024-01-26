@@ -201,27 +201,4 @@
 		</div>
 	</div>
 </section>
-<!-- TESTIMONIALS -->
-<section class="categories">
-	<div class="section-title">
-		<h2 style="margin-top: 25px;">What Our Customers Are Saying</h2>
-	</div>
-	<div class="container">
-		<div class="row">
-			<div class="categories__slider owl-carousel">
-				@foreach (var testimonial in (List<Testimonial>)(ViewBag.Testimonials))
-				{
-					<div class="col-lg-3" style="    display: flex;flex-direction: column;align-items: center;">
-						@{
-							string imageBase64 = Convert.ToBase64String(testimonial.User.Image);
-						}
-						<img src="data:image;base64,@imageBase64" style="width: 30%;border-radius: 50px;margin-bottom: 20px;">
-						<p class="testimonial-body text-center">
-							"@testimonial.TestimonialMessage ."
-						</p>
-					</div>
-				}
-			</div>
-		</div>
-	</div>
-</section>
+

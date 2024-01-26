@@ -8,26 +8,29 @@
 
     .role-selection {
         display: flex;
-        justify-content: space-between;
+        /* justify-content: space-between; */
     }
 
     .role-radio {
         margin-right: 10px;
     }
-    .hidestuff{
-        display:none;
+
+    .hidestuff {
+        display: none;
+    }
+
+    .row-space {
+        margin-bottom: 15px;
     }
 </style>
-<div class="container" style="display: flex; justify-content: center;">
+<div class="container">
     <div class="registration-form">
-        <div class="registration-header">
-            Joining Morafiq
-        </div>
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="All" class="text-danger"></div>
 
             <div class="mb-3 role-selection">
-                <label class="form-label">Select Role:</label>
+                <label class="form-label" style="margin-right:10px">Select Role:</label>
+                
                 <div class="form-check role-radio">
                     <input class="form-check-input" type="radio" name="Role" value="User" checked>
                     <label class="form-check-label" for="Role">Customer</label>
@@ -37,16 +40,17 @@
                     <label class="form-check-label" for="Role">Companion</label>
                 </div>
             </div>
-            
 
-            <div class="mb-3">
-                <label asp-for="FirstName" class="form-label"></label>
-                <input asp-for="FirstName" class="form-control">
-            </div>
+            <div class="row row-space">
+                <div class="mb-3 col-md-6">
+                    <label asp-for="FirstName" class="form-label"></label>
+                    <input asp-for="FirstName" class="form-control">
+                </div>
 
-            <div class="mb-3">
-                <label asp-for="LastName" class="form-label"></label>
-                <input asp-for="LastName" class="form-control">
+                <div class="mb-3 col-md-6">
+                    <label asp-for="LastName" class="form-label"></label>
+                    <input asp-for="LastName" class="form-control">
+                </div>
             </div>
 
             <div class="mb-3">
@@ -54,19 +58,25 @@
                 <input asp-for="Email" class="form-control">
             </div>
 
-            <div class="mb-3 hidestuff">
+            <div class="row hidestuff">
+
+            
+            <div class="mb-3 col-md-12">
                 <label for="CompanionDescription" class="form-label">Companion Description:</label>
                 <input for="CompanionDescription" name="CompanionDescription" class="form-control">
             </div>
-
-            <div class="mb-3 hidestuff">
-                <label for="CompanionPrice" class="form-label">Companion Price:</label>
-                <input type="number" for="CompanionPrice" name="CompanionPrice" class="form-control">
             </div>
 
-            <div class="form-group hidestuff">
-                <label for="ServiceId" class="control-label">Service :</label>
-                <select for="ServiceId" name="ServiceId" class="form-control" asp-items="ViewBag.ServiceId"></select>
+            <div class="row row-space hidestuff">
+                <div class="mb-3 col-md-6">
+                    <label for="CompanionPrice" class="form-label">Companion Price:</label>
+                    <input type="number" for="CompanionPrice" name="CompanionPrice" class="form-control">
+                </div>
+
+                <div class="mb-3 col-md-6">
+                    <label for="ServiceId" class="control-label">Service :</label>
+                    <select for="ServiceId" name="ServiceId" class="form-control" asp-items="ViewBag.ServiceId"></select>
+                </div>
             </div>
 
             <div class="mb-3">
@@ -74,18 +84,20 @@
                 <input type="file" class="form-control" name="FormFile">
             </div>
 
-            <div class="mb-3">
-                <label class="form-label" for="Password">Password:</label>
-                <input type="password" class="form-control" name="Password" autocomplete="new-password" aria-required="true">
+            <div class="row row-space">
+                <div class="mb-3 col-md-6">
+                    <label class="form-label" for="Password">Password:</label>
+                    <input type="password" class="form-control" name="Password" autocomplete="new-password" aria-required="true">
+                </div>
+
+                <div class="mb-3 col-md-6">
+                    <label class="form-label" for="ConfirmPassword">Confirm Password:</label>
+                    <input type="password" class="form-control" name="ConfirmPassword" autocomplete="new-password" aria-required="true">
+                </div>
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for="ConfirmPassword">Confirm Password:</label>
-                <input type="password" class="form-control" name="ConfirmPassword" autocomplete="new-password" aria-required="true">
-            </div>
-
-            <div class="mb-3">
-                <button type="submit" class="btn btn-success submit-btn" style="width: 100%;">Create</button>
+                <button type="submit" class="btn btn-dark submit-btn" style="width: 100%;">Create</button>
             </div>
         </form>
     </div>
@@ -103,7 +115,7 @@
                 if (radio.value === 'Companion') {
                     // Show hidden elements if Companion is selected
                     hiddenStuff.forEach(function (element) {
-                        element.style.display = 'block';
+                        element.style.display = 'flex';
                     });
                 } else {
                     // Hide elements if Customer is selected
