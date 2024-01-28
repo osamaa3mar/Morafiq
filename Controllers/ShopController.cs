@@ -40,7 +40,7 @@ namespace _Morafiq.Controllers
 
             ViewBag.Companions = _context.Companions.Include(review => review.Reviews).Where(c => c.CompanionStatus == "Accept").ToList();
             ViewBag.Services = _context.Services.ToList();
-            ViewBag.Reviews = _context.Reviews.ToList();
+            ViewBag.Reviews = _context.Reviews.Include(r => r.Companion).ThenInclude(c =>c.Service).Where(s =>s.Companion.ServiceId==id).ToList();
             ViewBag.SelectedService = selectedService;
             //ViewBag.CompanionImages = _context.CompanionImages.ToList();
             if (id == null || _context.Services == null)
@@ -203,7 +203,7 @@ namespace _Morafiq.Controllers
 				await SendOrderNoticeEmailToCompanion(orderCompanion);
 
 			}
-			cart.TotalPrice = 0;
+			//cart.TotalPrice += order;
 			cart.TotalQuantity = 0;
 			_context.Update(cart);
 			await _context.SaveChangesAsync();
@@ -213,7 +213,9 @@ namespace _Morafiq.Controllers
 		public async Task<IActionResult> PayAfterApproveFromCompanion(int orderId)
         {
 			var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-			Order order1 = _context.Orders.Where(o => o.OrderId == orderId && o.IsPayed == false).FirstOrDefault();
+            Cart cart = _context.Carts.Where(cart => cart.UserId == userId).SingleOrDefault();
+
+            Order order1 = _context.Orders.Where(o => o.OrderId == orderId && o.IsPayed == false).FirstOrDefault();
 			if (order1 != null)
 			{
 				if (order1.Status == "Accept")
@@ -225,14 +227,19 @@ namespace _Morafiq.Controllers
 					_context.Add(payment);
                     order1.IsPayed = true;
                     _context.Update(order1);
-					await _context.SaveChangesAsync();
+
+                    cart.TotalPrice -= payment.Amount;
+                    _context.Update(cart);
+                    await _context.SaveChangesAsync();
 
 					await SendOrderConfirmationEmail(order1);
-                    
-
+ 
                     return RedirectToAction("Index", "Orders", new { userId });
 				}
-			}
+                cart.TotalPrice -= order1.TotalPrice;
+                _context.Update(cart);
+                await _context.SaveChangesAsync();
+            }
 			return RedirectToAction("Index", "Home");
 		}
 

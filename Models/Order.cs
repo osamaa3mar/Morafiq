@@ -17,5 +17,6 @@ namespace _Morafiq.Models
         [Required]
         public string Status { get; set; }
         public bool IsPayed { get; set; }
+
     }
 }

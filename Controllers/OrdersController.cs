@@ -178,7 +178,11 @@ namespace _Morafiq.Controllers
         }
 		public async Task<IActionResult> EditOrderStatus(string UserId,string newStatus)
         {
-			var Order = await _context.Orders.Where(o => o.UserId == UserId && o.IsPayed == false).SingleOrDefaultAsync();
+
+			var Order = await _context.Orders
+	.Where(o => o.UserId == UserId && o.IsPayed == false)
+	.OrderByDescending(o => o.OrderId) // Order by OrderId in descending order
+	.FirstOrDefaultAsync();
 			Order.Status = newStatus;
        
 			_context.Update(Order);

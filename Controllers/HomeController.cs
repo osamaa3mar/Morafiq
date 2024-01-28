@@ -29,7 +29,7 @@ namespace _Morafiq.Controllers
 			var user = await _userManager.GetUserAsync(User);
             if (user != null)
             {
-				ViewBag.Companions = _context.Companions.Include(Companion => Companion.Service).Where(c => c.CompanionStatus == "Accept").ToList();
+				ViewBag.Companions = _context.Services.SelectMany(s => s.Companions.Take(4)).Where(c => c.CompanionStatus == "Accept").ToList();
 				ViewBag.Services = _context.Services.Include(Service => Service.Companions).ToList();
 				ViewBag.Reviews = _context.Reviews.ToList();
 				ViewBag.SelectedService = selectedService;

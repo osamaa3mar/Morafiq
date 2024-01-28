@@ -10,7 +10,7 @@
         <thead>
             <tr>
                 <th>
-                    User Name
+                    Order ID
                 </th>
                
                 <th>
@@ -32,14 +32,7 @@
             {
                 <tr>
                     <td>
-                        @if (item.User != null)
-                        {
-                            @(item.User.FirstName + " " + item.User.LastName)
-                        }
-                        else
-                        {
-                            <span class="text-muted">N/A</span>
-                        }
+                        @Html.DisplayFor(modelItem => item.OrderId)
                     </td>
 
 

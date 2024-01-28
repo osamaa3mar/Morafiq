@@ -92,49 +92,43 @@
 			</div>
 		</div>
 		<div class="row featured__filter">
+		
+
 			@foreach (var Companion in ((List<Companion>)ViewBag.Companions))
 			{
 				var ServiceId = Companion.ServiceId;
-				short CompanionCounter = 5;
-				if (CompanionCounter == 0)
-				{
-					break;
-				}
-				// Check if the Companion belongs to the selected Service
-				if (ViewBag.SelectedService == null || ServiceId == ViewBag.SelectedService)
-				{
-					CompanionCounter--;
-					string[] words = Companion.Service.ServiceName.Split(' ');
-					<div class="col-lg-3 col-md-4 col-sm-6 mix @words[0]">
-						<div class="featured__item">
-							@{
-								string imageBase64 = Convert.ToBase64String(Companion.Image);
-							}
-							<a asp-controller="Shop" asp-action="CompanionDetails"
-							   asp-route-id="@Companion.CompanionId">
-								<div class="featured__item__pic set-bg">
-									<img src="data:image;base64,@imageBase64">
-								</div>
-								<div class="featured__item__text">
-									<h6>
-										@Companion.CompanionName
-									</h6>
-									@if (Companion.CompanionSale > 0)
-									{
-										<h5>@Companion.CompanionPrice JD</h5>
-										int sale = (int)Companion.CompanionSale;
-										<p class="text-danger">On Sale! Save @sale%!</p>
-									}
-									else
-									{
-										<h5>@Companion.CompanionPrice JD</h5>
-									}
-								</div>
-							</a>
-						</div>
+
+				string[] words = Companion.Service.ServiceName.Split(' ');
+				<div class="col-lg-3 col-md-4 col-sm-6 mix @words[0]">
+					<div class="featured__item">
+						@{
+							string imageBase64 = Convert.ToBase64String(Companion.Image);
+						}
+						<a asp-controller="Shop" asp-action="CompanionDetails"
+						   asp-route-id="@Companion.CompanionId">
+							<div class="featured__item__pic set-bg">
+								<img src="data:image;base64,@imageBase64">
+							</div>
+							<div class="featured__item__text">
+								<h6>
+									@Companion.CompanionName
+								</h6>
+								@if (Companion.CompanionSale > 0)
+								{
+									<h5>@Companion.CompanionPrice JD</h5>
+									int sale = (int)Companion.CompanionSale;
+									<p class="text-danger">On Sale! Save @sale%!</p>
+								}
+								else
+								{
+									<h5>@Companion.CompanionPrice JD</h5>
+								}
+							</div>
+						</a>
 					</div>
-					@* </div> *@
-				}
+				</div>
+				@* </div> *@
+
 			}
 		</div>
 
@@ -159,14 +153,14 @@
 						<h4>@Service.ServiceName</h4>
 						<div class="latest-product__slider owl-carousel">
 
-							
 
-								@foreach (var Companion in Service.Companions.ToList())
-								{
+
+							@foreach (var Companion in Service.Companions.ToList())
+							{
 								<div class="latest-prdouct__slider__item">
 									@foreach (var review in ((List<Review>)ViewBag.Reviews).Where(r => r.ReviewRate >= 4))
 									{
-										@if (review.CompanionId == Companion.CompanionId)
+										@if (review.CompanionId == Companion.CompanionId && review.ReviewStatus=="Accept")
 										{
 
 											string imageBase64 = Convert.ToBase64String(Companion.Image);
@@ -178,19 +172,27 @@
 												<div class="latest-product__item__text">
 													<h6>@Companion.CompanionName</h6>
 
-													<span style="color:gold;">
+													@* <span style="color:gold;">
 														(@review.ReviewRate) of 5 starz
-													</span>
+													</span> *@												
+												</div>
+												<div class="product__details__rating">
+													@for (int i = 0; i < @review.ReviewRate; i++)
+													{
+														<span>
+															<i class="fa fa-star" style="color: #ffc700;"></i>
+														</span>
+													}
 												</div>
 											</a>
 											break;
 										}
 									}
 								</div>
-								}
+							}
 
 
-							
+
 
 						</div>
 					</div>

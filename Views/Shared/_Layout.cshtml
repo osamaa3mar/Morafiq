@@ -159,7 +159,18 @@
 					<li>
 						<a href="/Shop/UserCart">
 							<i class="fa fa-handshake-o"></i>
-							 <span>*</span>
+							@{
+								string totalQuantityString = cartRow["TotalQuantity"].ToString();
+							}
+							
+							@if (int.TryParse(totalQuantityString, out int totalQuantity) && totalQuantity > 0)
+							{
+								<span>*</span>
+							}
+
+							
+								
+							
 						</a>
 					</li>
 				</ul>
@@ -350,7 +361,15 @@
 								<li>
 									<a href="/Shop/UserCart">
 										<i class="fa fa-handshake-o"></i>
-										 <span>*</span>
+										@{
+											string totalQuantityString = cartRow["TotalQuantity"].ToString();
+
+										}
+										@if (int.TryParse(totalQuantityString, out int totalQuantity) && totalQuantity > 0)
+										{
+											<span>*</span>
+										}
+										 
 									</a>
 								</li>
 							</ul>
